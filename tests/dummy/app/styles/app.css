@@ -1,0 +1,12 @@
+
+.window-frame {
+  background: #ccc;
+
+  padding: 20px;
+}
+
+.active-window-frame {
+  background: red;
+
+  padding: 20px;
+}

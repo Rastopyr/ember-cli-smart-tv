@@ -21,7 +21,8 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "Common"
   ],
   "node": false,
   "browser": false,

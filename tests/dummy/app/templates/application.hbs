@@ -1,3 +1,9 @@
 <h2 id="title">Welcome to Ember</h2>
 
-{{outlet}}
+
+{{#frame/window-frame}}
+  {{#link-to 'index'}}
+    Index
+  {{/link-to}}
+  {{outlet}}
+{{/frame/window-frame}}

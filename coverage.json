@@ -1,0 +1,98 @@
+{
+  "stats": {
+    "suites": 36,
+    "tests": 45,
+    "passes": 45,
+    "pending": 0,
+    "failures": 0,
+    "start": "2016-02-18T09:35:54.976Z",
+    "end": "2016-02-18T09:36:02.318Z"
+  },
+  "coverage": {
+    "total": {
+      "statementsTotal": 221,
+      "statementsCovered": 73,
+      "percentage": 33.03
+    },
+    "files": [
+      {
+        "name": "ember-cli-smart-tv/components/frame/cell-frame",
+        "statementsTotal": 4,
+        "statementsCovered": 3,
+        "percentage": 75
+      },
+      {
+        "name": "ember-cli-smart-tv/components/frame/row-frame",
+        "statementsTotal": 18,
+        "statementsCovered": 3,
+        "percentage": 16.67
+      },
+      {
+        "name": "ember-cli-smart-tv/components/frame/window-frame",
+        "statementsTotal": 44,
+        "statementsCovered": 3,
+        "percentage": 6.82
+      },
+      {
+        "name": "ember-cli-smart-tv/mixins/frame/parent",
+        "statementsTotal": 42,
+        "statementsCovered": 3,
+        "percentage": 7.14
+      },
+      {
+        "name": "ember-cli-smart-tv/mixins/remote/control-event",
+        "statementsTotal": 6,
+        "statementsCovered": 3,
+        "percentage": 50
+      },
+      {
+        "name": "ember-cli-smart-tv/mixins/remote/remote-keydown",
+        "statementsTotal": 28,
+        "statementsCovered": 4,
+        "percentage": 14.29
+      },
+      {
+        "name": "ember-cli-smart-tv/services/env/hub/keycodes",
+        "statementsTotal": 14,
+        "statementsCovered": 3,
+        "percentage": 21.43
+      },
+      {
+        "name": "ember-cli-smart-tv/services/env/hub/keydown",
+        "statementsTotal": 8,
+        "statementsCovered": 3,
+        "percentage": 37.5
+      },
+      {
+        "name": "ember-cli-smart-tv/services/env/keycodes",
+        "statementsTotal": 36,
+        "statementsCovered": 36,
+        "percentage": 100
+      },
+      {
+        "name": "ember-cli-smart-tv/services/env/keydown",
+        "statementsTotal": 6,
+        "statementsCovered": 3,
+        "percentage": 50
+      },
+      {
+        "name": "ember-cli-smart-tv/services/env/tizen/keycodes",
+        "statementsTotal": 3,
+        "statementsCovered": 3,
+        "percentage": 100
+      },
+      {
+        "name": "ember-cli-smart-tv/services/env/tizen/keydown",
+        "statementsTotal": 9,
+        "statementsCovered": 3,
+        "percentage": 33.33
+      },
+      {
+        "name": "ember-cli-smart-tv/services/frame",
+        "statementsTotal": 3,
+        "statementsCovered": 3,
+        "percentage": 100
+      }
+    ]
+  }
+}
