@@ -10,3 +10,23 @@
 
   padding: 20px;
 }
+
+.frame-row-frame {
+  padding: 20px;
+}
+
+.hover-row-frame {
+  background: blue;
+}
+
+.hover-row-frame a {
+  /*color: white;*/
+}
+
+.frame-cell-frame {
+  padding: 10px;
+}
+
+.hover-cell-frame {
+  background: white;
+}

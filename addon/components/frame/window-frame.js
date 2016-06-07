@@ -1,16 +1,16 @@
 
 import Ember from 'ember';
 
-import ParentMixin from '../../mixins/frame/parent';
-import RemoteKeydownMixin from '../../mixins/remote/remote-keydown';
-import KeyCodes from '../../services/env/keycodes';
-import layout from '../../templates/components/frame/window-frame';
+import ParentMixin from 'ember-cli-smart-tv/mixins/frame/parent';
+import RemoteKeydownMixin from 'ember-cli-smart-tv/mixins/remote/remote-keydown';
+import KeyCodes from 'ember-cli-smart-tv/services/env/keycodes';
+import layout from 'ember-cli-smart-tv/templates/components/frame/window-frame';
 
 export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
 
   classNames:['window-frame'],
 
-  classNameBindings: ['isActive:active-window-frame'],
+  classNameBindings: ['isHover:active-window-frame'],
 
   actions: {
     registerRow(row) {
@@ -25,12 +25,12 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
   bindKeys: [
     {
       code: KeyCodes.KEY_UP,
-      predicates: ['isActiveFrame'],
+      predicates: ['isHoverFrame'],
       handlers: ['changeRowUp'],
     },
     {
       code: KeyCodes.KEY_DOWN,
-      predicates: ['isActiveFrame'],
+      predicates: ['isHoverFrame'],
       handlers: ['changeRowDown'],
     },
   ],
@@ -43,21 +43,21 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
    */
   changeRowUp() {
     const rows = this.get('rows');
-    const activeIndex = this.get('activeIndex');
+    const hoverIndex = this.get('hoverIndex');
     const lastIndex = rows.length - 1;
     const isLoop = this.get('isLoop');
 
-    if (activeIndex === 0) {
+    if (hoverIndex === 0) {
 
       if (isLoop) {
-        this.set('activeIndex', lastIndex);
+        this.set('hoverIndex', lastIndex);
         this.trigger('rowDidChange', { direction: 'up' });
       }
 
       return;
     }
 
-    this.decrementProperty('activeIndex');
+    this.decrementProperty('hoverIndex');
     this.trigger('rowDidChange', { direction: 'up' });
     return;
   },
@@ -70,20 +70,20 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
    */
   changeRowDown() {
     const rows = this.get('rows');
-    const activeIndex = this.get('activeIndex');
+    const hoverIndex = this.get('hoverIndex');
     const lastIndex = rows.length - 1;
     const isLoop = this.get('isLoop');
 
-    if (activeIndex === lastIndex) {
+    if (hoverIndex === lastIndex) {
       if (isLoop) {
-        this.set('activeIndex', 0);
+        this.set('hoverIndex', 0);
         this.trigger('rowDidChange', { direction: 'down' });
       }
 
       return;
     }
 
-    this.incrementProperty('activeIndex');
+    this.incrementProperty('hoverIndex');
     this.trigger('rowDidChange', { direction: 'down' });
     return;
   },
@@ -93,8 +93,8 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
    *
    * @return  { Boolean }
    */
-  isActiveFrame() {
-    return this.get('isActive');
+  isHoverFrame() {
+    return this.get('isHover');
   },
 
   /**
@@ -130,7 +130,7 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Boolean }
    */
-  isActive: Ember.computed('frameService.activeWindow', function() {
+  isHover: Ember.computed('frameService.activeWindow', function() {
     const activeWindow = this.get('frameService.activeWindow');
 
     if (activeWindow === this) {
@@ -147,15 +147,15 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Ember.View }
    */
-  activeRow: Ember.computed('activeIndex', 'rows.[]', function() {
+  activeRow: Ember.computed('hoverIndex', 'rows.[]', function() {
     const rows = this.get('rows');
-    const activeIndex = this.get('activeIndex');
+    const hoverIndex = this.get('hoverIndex');
 
-    if (!rows[activeIndex]) {
+    if (!rows[hoverIndex]) {
       Ember.Logger.warn('`Hover index of active window, out of sync with rows`');
     }
 
-    return rows[activeIndex];
+    return rows[hoverIndex];
   }),
 
   /**

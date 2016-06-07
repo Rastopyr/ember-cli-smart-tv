@@ -2,8 +2,12 @@
 
 
 {{#frame/window-frame}}
-  {{#link-to 'index'}}
-    Index
-  {{/link-to}}
+  {{#frame/row-frame}}
+    {{#frame/cell-frame tagName="span"}}
+      {{#link-to 'index'}}
+        home
+      {{/link-to}}
+    {{/frame/cell-frame}}
+  {{/frame/row-frame}}
   {{outlet}}
 {{/frame/window-frame}}
