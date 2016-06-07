@@ -1,0 +1,1 @@
+export { default } from 'ember-cli-smart-tv/components/frame/window-frame';
