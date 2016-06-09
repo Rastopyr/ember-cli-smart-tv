@@ -46,12 +46,17 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
     const hoverIndex = this.get('hoverIndex');
     const lastIndex = rows.length - 1;
     const isLoop = this.get('isLoop');
+    const noSwitch = this.get('noSwitch');
 
     if (hoverIndex === 0) {
 
       if (isLoop) {
         this.set('hoverIndex', lastIndex);
         this.trigger('rowDidChange', { direction: 'up' });
+      }
+
+      if (!noSwitch) {
+        this.get('frameService').trigger('windowFocusUp', this);
       }
 
       return;
@@ -73,11 +78,16 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
     const hoverIndex = this.get('hoverIndex');
     const lastIndex = rows.length - 1;
     const isLoop = this.get('isLoop');
+    const noSwitch = this.get('noSwitch');
 
     if (hoverIndex === lastIndex) {
       if (isLoop) {
         this.set('hoverIndex', 0);
         this.trigger('rowDidChange', { direction: 'down' });
+      }
+
+      if (!noSwitch) {
+        this.get('frameService').trigger('windowFocusDown', this);
       }
 
       return;
@@ -130,10 +140,16 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Boolean }
    */
-  isHover: Ember.computed('frameService.activeWindow', function() {
+  isHover: Ember.computed('frameService.activeWindow', 'parentCell.isHover', 'focused', function() {
     const activeWindow = this.get('frameService.activeWindow');
+    const parentCell = this.get('parentCell');
+    const focused = this.get('focused');
 
-    if (activeWindow === this) {
+    if (!focused) {
+      return false;
+    }
+
+    if (activeWindow === this || (parentCell && parentCell.get('isHover'))) {
       return true;
     }
 
@@ -200,6 +216,12 @@ export default Ember.Component.extend(ParentMixin, RemoteKeydownMixin, {
         rows.slice(rowIndex + 1, rows.length)
       )
     );
+  },
+
+  activateWindow() {
+    this.get('frameService.windows').forEach((wi)=> wi.set('focused', false));
+
+    this.set('focused', true);
   },
 
   regiserWindow: Ember.on('init', function() {

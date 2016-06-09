@@ -71,6 +71,8 @@ export default Ember.Component.extend(RemoteKeydownMixin, ParentMixin, {
    */
   isRowFrame: true,
 
+  frameService: Ember.inject.service('frame'),
+
   /**
    * Index of hovered cell
    *
@@ -98,14 +100,14 @@ export default Ember.Component.extend(RemoteKeydownMixin, ParentMixin, {
    * @public
    * @type  { Boolean }
    */
-  isHover: Ember.computed('parentWindow.hoverIndex', 'parentWindow.isHover', 'rowIndex', function() {
+  isHover: Ember.computed('parentWindow.focused', 'parentWindow.hoverIndex', 'parentWindow.isHover', 'rowIndex', function() {
     const parentView = this.get('parentWindow');
 
     if (!parentView) {
       return false;
     }
 
-    if (!parentView.get('isWindowFrame') && !parentView.get('isHover')) {
+    if (!parentView.get('focused') || !parentView.get('isWindowFrame') || !parentView.get('isHover')) {
       return false;
     }
 
@@ -174,8 +176,9 @@ export default Ember.Component.extend(RemoteKeydownMixin, ParentMixin, {
   changeCellLeft() {
     const cells = this.get('cells');
     const hoverIndex = this.get('hoverIndex');
-    const lastIndex = cells.length - 1;
+    const lastIndex = cells.length > 0 ? cells.length - 1 : 0;
     const isLoop = this.get('isLoop');
+    const noSwitch = this.get('noSwitch');
 
     if (hoverIndex === 0) {
 
@@ -184,11 +187,16 @@ export default Ember.Component.extend(RemoteKeydownMixin, ParentMixin, {
         this.trigger('cellDidChange', { direction: 'left' });
       }
 
+      if (!noSwitch) {
+        this.get('frameService').trigger('rowFocusLeft', this);
+      }
+
       return;
     }
 
     this.decrementProperty('hoverIndex');
     this.trigger('cellDidChange', { direction: 'left' });
+
     return;
   },
 
@@ -199,10 +207,13 @@ export default Ember.Component.extend(RemoteKeydownMixin, ParentMixin, {
    * @function
    */
   changeCellRight() {
-    const rows = this.get('cells');
+    const cells = this.get('cells');
     const hoverIndex = this.get('hoverIndex');
-    const lastIndex = rows.length - 1;
+    const lastIndex = cells.length > 0 ? cells.length - 1 : 0;
     const isLoop = this.get('isLoop');
+    const noSwitch = this.get('noSwitch');
+
+    console.log('cell right', hoverIndex, lastIndex);
 
     if (hoverIndex === lastIndex) {
       if (isLoop) {
@@ -210,11 +221,16 @@ export default Ember.Component.extend(RemoteKeydownMixin, ParentMixin, {
         this.trigger('cellDidChange', { direction: 'right' });
       }
 
+      if (!noSwitch) {
+        this.get('frameService').trigger('rowFocusRight', this);
+      }
+
       return;
     }
 
     this.incrementProperty('hoverIndex');
     this.trigger('cellDidChange', { direction: 'right' });
+
     return;
   },
 

@@ -30,3 +30,7 @@
 .hover-cell-frame {
   background: white;
 }
+
+.parentHoverCell {
+  display: inline-block;
+}

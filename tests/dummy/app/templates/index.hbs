@@ -1,28 +1,60 @@
-{{#frame/window-frame}}
-  {{#frame/row-frame}}
-    {{#frame/cell-frame tagName="span"}}
-      {{#link-to 'index'}}
-        home
-      {{/link-to}}
-    {{/frame/cell-frame}}
+{{#menu-list forceActive=true}}
+  {{#menu-row}}
+    {{#menu-cell class="parentHoverCell"}}
+      back
+    {{/menu-cell}}
+    {{#menu-cell class="parentHoverCell"}}
+      {{#menu-list}}
+        {{#menu-row}}
+          play
+        {{/menu-row}}
+        {{#menu-row}}
+          add to collection
+        {{/menu-row}}
 
-    {{#frame/cell-frame tagName="span"}}
-      {{#link-to 'without'}}
-        without
-      {{/link-to}}
-    {{/frame/cell-frame}}
-  {{/frame/row-frame}}
-  {{#frame/row-frame}}
-    {{#frame/cell-frame tagName="span"}}
-      {{#link-to 'index'}}
-        home
-      {{/link-to}}
-    {{/frame/cell-frame}}
+      {{/menu-list}}
+    {{/menu-cell}}
+    {{#menu-cell class="parentHoverCell"}}
+      {{#menu-list}}
+        {{#menu-row}}
+          track 1
+        {{/menu-row}}
+        {{#menu-row}}
+          track 2
+        {{/menu-row}}
+        {{#menu-row}}
+          track 2
+        {{/menu-row}}
+        {{#menu-row}}
+          track 2
+        {{/menu-row}}
+      {{/menu-list}}
+    {{/menu-cell}}
+  {{/menu-row}}
+  {{#menu-row}}
+    {{#menu-cell class="parentHoverCell"}}
+      back
+    {{/menu-cell}}
+    {{#menu-cell class="parentHoverCell"}}
+      {{#menu-list}}
+        {{#menu-row}}
+          play
+        {{/menu-row}}
+        {{#menu-row}}
+          add to collection
+        {{/menu-row}}
 
-    {{#frame/cell-frame tagName="span"}}
-      {{#link-to 'without'}}
-        without
-      {{/link-to}}
-    {{/frame/cell-frame}}
-  {{/frame/row-frame}}
-{{/frame/window-frame}}
+      {{/menu-list}}
+    {{/menu-cell}}
+    {{#menu-cell class="parentHoverCell"}}
+      {{#menu-list}}
+        {{#menu-row}}
+          track 1
+        {{/menu-row}}
+        {{#menu-row}}
+          track 2
+        {{/menu-row}}
+      {{/menu-list}}
+    {{/menu-cell}}
+  {{/menu-row}}
+{{/menu-list}}

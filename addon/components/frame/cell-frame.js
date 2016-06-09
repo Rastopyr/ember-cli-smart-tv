@@ -5,6 +5,8 @@ import ParentMixin from '../../mixins/frame/parent';
 
 import layout from '../../templates/components/frame/cell-frame';
 
+const { computed, observer } = Ember;
+
 export default Ember.Component.extend(ParentMixin, {
 
   tagName: 'span',
@@ -64,14 +66,31 @@ export default Ember.Component.extend(ParentMixin, {
    isHover: Ember.computed('cellIndex', 'parentRow.isHover', 'parentRow.hoverIndex', function() {
      const parentRow = this.get('parentRow');
 
-     if (!parentRow) {
-      return false;
-     }
-
-     if (!parentRow.get('isHover')) {
+     if (!parentRow || !parentRow.get('isHover')) {
        return false;
      }
 
      return parentRow.get('hoverIndex') === this.get('cellIndex');
-   })
+   }),
+
+  activateChildWindow: observer('isHover', function() {
+    const isHover = this.get('isHover');
+    const childWindow = this.get('childWindow');
+
+    if (isHover && childWindow) {
+      childWindow.activateWindow();
+    }
+  }),
+
+  childWindow: computed('childWindows.[]', function() {
+    const childWindows = this.get('childWindows');
+
+    if (childWindows.length > 1) {
+      throw new Error('Child window for cell should be one');
+    }
+
+    return childWindows[0];
+  }),
+
+  isHasChildWindow: computed.bool('childWindow'),
 });
