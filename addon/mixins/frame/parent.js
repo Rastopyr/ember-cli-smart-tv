@@ -1,4 +1,7 @@
+
 import Ember from 'ember';
+
+const { observer, on, computed, A } = Ember;
 
 export default Ember.Mixin.create({
 
@@ -11,12 +14,14 @@ export default Ember.Mixin.create({
    */
   isRoot: Ember.computed.not('parentWindow'),
 
-  childWindows: Ember.computed('childViews', 'childViews.[]', function() {
-    const childViews = this.get('childViews');
+  childWindows: computed(()=> A()),
 
-    return childViews.filter(function(childView) {
+  childWindowsInit: on('didInsertElement', function() {
+    const childWindows = this.get('childViews').filter(function(childView) {
       return childView.get('isWindowFrame');
     });
+
+    this.get('childWindows').pushObjects(childWindows);
   }),
 
   hasChildWindows: Ember.computed('childWindows', function() {
