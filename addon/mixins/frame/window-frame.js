@@ -208,4 +208,15 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
     service.trigger('registerWindow', this);
   }),
+
+  didRender() {
+    const activeWindow = this.get('frame.activeWindow');
+    const shouldForceHover = this.get('forceHover');
+
+    if (!activeWindow && shouldForceHover) {
+      this.set('isHover', true);
+    }
+
+    return this._super();
+  }
 });
