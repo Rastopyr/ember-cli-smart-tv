@@ -13,6 +13,8 @@ export default Ember.Mixin.create(ParentMixin, {
 
   classNames: ['frame-cell-frame'],
 
+  isHasChildWindow: computed.bool('childWindow'),
+
   /**
    * Layout string of component
    * @private
@@ -90,5 +92,4 @@ export default Ember.Mixin.create(ParentMixin, {
     return childWindows[0];
   }),
 
-  isHasChildWindow: computed.bool('childWindow'),
 });

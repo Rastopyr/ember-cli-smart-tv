@@ -1,23 +1,14 @@
 
 import Ember from 'ember';
 
-const { computed, A, on } = Ember;
+const { computed, A, on, observer } = Ember;
 
 export default Ember.Service.extend(Ember.Evented, {
 
   windows: computed(()=> A()),
 
-  activeWindow: computed('windows.[]', 'windows.@each.focused', function() {
-    const windows = this.get('windows');
-    // const forceActiveWindow = windows.find((w) => w.get('forceActive'));
-    const forceActiveWindow = windows.find((w) => w.get('focused'));
-    const probWindow = forceActiveWindow ? forceActiveWindow : windows.get('lastObject');
-
-    if (probWindow.get('focused') === undefined) {
-      probWindow.set('focused', true);
-    }
-
-    return probWindow;
+  activeWindow: computed('windows.[]', 'windows.@each.isHover', function() {
+    return this.get('windows').find((w) => w.get('isHover'));
   }),
 
   bindUpWindow: on('windowFocusUp', function(w) {
@@ -27,10 +18,17 @@ export default Ember.Service.extend(Ember.Evented, {
       return;
     }
 
-    this.get('windows').forEach((wi)=> wi.set('focused', false));
-
+    this.get('windows').forEach((wi)=> wi.set('isHover', false));
     parentWindow.changeRowUp();
-    parentWindow.set('focused', true);
+
+    const childWindow = parentWindow.get('activeRow.hoverCell.childWindow');
+
+    if (!childWindow) {
+      parentWindow.set('isHover', true);
+      return;
+    }
+
+    childWindow.set('isHover', true);
   }),
 
   bindDownWindow: on('windowFocusDown', function(w) {
@@ -40,44 +38,60 @@ export default Ember.Service.extend(Ember.Evented, {
       return;
     }
 
-    this.get('windows').forEach((wi)=> wi.set('focused', false));
-
+    this.get('windows').forEach((wi)=> wi.set('isHover', false));
     parentWindow.changeRowDown();
-    parentWindow.set('focused', true);
+
+    const childWindow = parentWindow.get('activeRow.hoverCell.childWindow');
+
+    if (!childWindow) {
+      parentWindow.set('isHover', true);
+      return;
+    }
+
+    childWindow.set('isHover', true);
   }),
 
   bindRightRow: on('rowFocusRight', function(r) {
     const parentWindow = r.get('parentWindow.parentWindow');
+
     if (!parentWindow) {
       return;
     }
+
+    this.get('windows').forEach((wi)=> wi.set('isHover', false));
+    parentWindow.set('isHover', false);
+
+    parentWindow.get('activeRow').changeCellRight();
+
     const childWindow = parentWindow.get('activeRow.hoverCell.childWindow');
 
     if (!childWindow) {
+      parentWindow.set('isHover', true);
       return;
     }
 
-    this.get('windows').forEach((wi)=> wi.set('focused', false));
+    childWindow.set('isHover', true);
 
-    parentWindow.get('activeRow').changeCellRight();
-    parentWindow.set('focused', true);
   }),
 
   bindLeftRow: on('rowFocusLeft', function(r) {
     const parentWindow = r.get('parentWindow.parentWindow');
+
     if (!parentWindow) {
       return;
     }
+
+    this.get('windows').forEach((wi)=> wi.set('isHover', false));
+    parentWindow.get('activeRow').changeCellLeft();
+
     const childWindow = parentWindow.get('activeRow.hoverCell.childWindow');
 
     if (!childWindow) {
+      parentWindow.set('isHover', true);
       return;
     }
 
-    this.get('windows').forEach((wi)=> wi.set('focused', false));
-
-    parentWindow.get('activeRow').changeCellLeft();
-    parentWindow.set('focused', true);
+    childWindow.set('isHover', true);
   }),
 
   activeRow: computed.alias('activeWindow.activeRow'),

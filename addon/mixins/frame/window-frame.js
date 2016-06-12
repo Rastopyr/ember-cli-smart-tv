@@ -6,6 +6,8 @@ import RemoteKeydownMixin from 'ember-cli-smart-tv/mixins/remote/remote-keydown'
 import KeyCodes from 'ember-cli-smart-tv/services/env/keycodes';
 import layout from 'ember-cli-smart-tv/templates/components/frame/window-frame';
 
+const { computed, on } = Ember;
+
 export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   classNames:['window-frame'],
@@ -131,28 +133,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   frameService: Ember.inject.service('frame'),
 
-  /**
-   * Is hovered this window
-   *
-   * @property
-   * @public
-   * @type  { Boolean }
-   */
-  isHover: Ember.computed('frameService.activeWindow', 'parentCell.isHover', 'focused', function() {
-    const activeWindow = this.get('frameService.activeWindow');
-    const parentCell = this.get('parentCell');
-    const focused = this.get('focused');
-
-    if (!focused) {
-      return false;
-    }
-
-    if (activeWindow === this || (parentCell && parentCell.get('isHover'))) {
-      return true;
-    }
-
-    return this._super();
-  }),
+  isHover: false,
 
   /**
    * Reference to hover row
@@ -217,12 +198,12 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
   },
 
   activateWindow() {
-    this.get('frameService.windows').forEach((wi)=> wi.set('focused', false));
+    this.get('frameService.windows').forEach((wi)=> wi.set('isHover', false));
 
-    this.set('focused', true);
+    this.set('isHover', true);
   },
 
-  regiserWindow: Ember.on('init', function() {
+  registerWindow: Ember.on('init', function() {
     const service = this.get('frameService');
 
     service.trigger('registerWindow', this);
