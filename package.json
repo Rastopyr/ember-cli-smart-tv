@@ -1,7 +1,7 @@
 {
   "name": "ember-cli-smart-tv",
-  "version": "0.0.3",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.4",
+  "description": "Addon for create system of grid, for smart-tv applications",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -41,7 +41,10 @@
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "smart-tv",
+    "samsung",
+    "tizen"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.5",
