@@ -13,8 +13,6 @@ export default Ember.Mixin.create(ParentMixin, {
 
   classNames: ['frame-cell-frame'],
 
-  classNameBindings: ['isHover:hover-cell-frame'],
-
   /**
    * Layout string of component
    * @private
@@ -45,7 +43,7 @@ export default Ember.Mixin.create(ParentMixin, {
    /**
     * Register this cell in parent row
     */
-   registerCellInParent: Ember.on('didInsertElement', function() {
+   registerCellInParent: Ember.on('init', function() {
     const parentRow = this.get('parentRow');
 
     if (!parentRow) {

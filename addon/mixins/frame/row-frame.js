@@ -10,8 +10,6 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   classNames: ['frame-row-frame'],
 
-  classNameBindings: ['isHover:hover-row-frame'],
-
   bindKeys: [
     {
       code: KeyCodes.KEY_RIGHT,
@@ -126,7 +124,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
   /**
    * Register row in parent window
    */
-  registerRowInParent: Ember.on('didInsertElement', function() {
+  registerRowInParent: Ember.on('init', function() {
     const parentWindow = this.get('parentWindow');
 
     if (!parentWindow) {

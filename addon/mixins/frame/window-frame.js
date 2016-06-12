@@ -10,8 +10,6 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   classNames:['window-frame'],
 
-  classNameBindings: ['isHover:active-window-frame'],
-
   actions: {
     registerRow(row) {
       this.registerRow(row);
