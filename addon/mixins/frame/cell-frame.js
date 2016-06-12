@@ -43,7 +43,7 @@ export default Ember.Mixin.create(ParentMixin, {
    /**
     * Register this cell in parent row
     */
-   registerCellInParent: Ember.on('init', function() {
+   registerCellInParent: Ember.on('didInsertElement', function() {
     const parentRow = this.get('parentRow');
 
     if (!parentRow) {

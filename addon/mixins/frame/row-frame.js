@@ -124,7 +124,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
   /**
    * Register row in parent window
    */
-  registerRowInParent: Ember.on('init', function() {
+  registerRowInParent: Ember.on('didInsertElement', function() {
     const parentWindow = this.get('parentWindow');
 
     if (!parentWindow) {
@@ -208,8 +208,6 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     const lastIndex = cells.length > 0 ? cells.length - 1 : 0;
     const isLoop = this.get('isLoop');
     const noSwitch = this.get('noSwitch');
-
-    console.log('cell right', hoverIndex, lastIndex);
 
     if (hoverIndex === lastIndex) {
       if (isLoop) {

@@ -222,7 +222,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     this.set('focused', true);
   },
 
-  regiserWindow: Ember.on('init', function() {
+  regiserWindow: Ember.on('didInsertElement', function() {
     const service = this.get('frameService');
 
     service.trigger('registerWindow', this);
