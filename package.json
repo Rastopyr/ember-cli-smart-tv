@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-smart-tv",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Addon for create system of grid, for smart-tv applications",
   "directories": {
     "doc": "doc",
@@ -13,7 +13,7 @@
   },
   "repository": "",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 4.1.1"
   },
   "author": "",
   "license": "MIT",
