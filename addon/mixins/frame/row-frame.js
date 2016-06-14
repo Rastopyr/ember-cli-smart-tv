@@ -242,18 +242,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @function
    * @param { Ember.View }  cell Cell that should removed
    */
-  destroyCell(cell) {
-    const cells = this.get('cells');
-    const cellIndex = cells.indexOf(cell);
-
-    if (cellIndex === -1) {
-      return;
-    }
-
-    this.set('cells',
-      cells.slice(0, cellIndex).concat(
-        cells.slice(cellIndex + 1, cells.length)
-      )
-    );
-  },
+   destroyCell(cell) {
+     this.get('cells').removeObject(cell);
+   },
 });

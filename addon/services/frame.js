@@ -59,7 +59,6 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     this.get('windows').forEach((wi)=> wi.set('isHover', false));
-    parentWindow.set('isHover', false);
 
     parentWindow.get('activeRow').changeCellRight();
 
@@ -99,6 +98,12 @@ export default Ember.Service.extend(Ember.Evented, {
   activeCell: computed.alias('activeRow.activeCell'),
 
   regitserWindow: on('registerWindow', function(wind) {
+    wind.on('didDestroyElement', () => this.destroyWindow(wind));
+
     this.get('windows').pushObject(wind);
   }),
+
+  destroyWindow(wind) {
+    this.get('windows').removeObject(wind);
+  }
 });

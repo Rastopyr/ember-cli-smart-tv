@@ -35,6 +35,8 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     },
   ],
 
+  registerChildWindow: 'registerChildWindow',
+
   /**
    * Change row index to up
    *
@@ -183,18 +185,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @param { Ember.View }  row Row that should removed
    */
   destroyRow(row) {
-    const rows = this.get('rows');
-    const rowIndex = rows.indexOf(row);
-
-    if (rowIndex === -1) {
-      return;
-    }
-
-    this.set('rows',
-      rows.slice(0, rowIndex).concat(
-        rows.slice(rowIndex + 1, rows.length)
-      )
-    );
+    this.get('rows').removeObject(row);
   },
 
   activateWindow() {
@@ -205,18 +196,12 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   registerWindow: Ember.on('init', function() {
     const service = this.get('frameService');
+    const parentCell = this.get('parentCell');
 
-    service.trigger('registerWindow', this);
-  }),
-
-  didRender() {
-    const activeWindow = this.get('frame.activeWindow');
-    const shouldForceHover = this.get('forceHover');
-
-    if (!activeWindow && shouldForceHover) {
-      this.set('isHover', true);
+    if (parentCell) {
+      parentCell.registerChildWindow(this);
     }
 
-    return this._super();
-  }
+    service.trigger('registerWindow', this);
+  })
 });

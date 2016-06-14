@@ -9,6 +9,10 @@ const { computed, observer } = Ember;
 
 export default Ember.Mixin.create(ParentMixin, {
 
+  registerChildWindow(w) {
+    this.set('childWindow', w);
+  },
+
   tagName: 'span',
 
   classNames: ['frame-cell-frame'],
@@ -80,16 +84,6 @@ export default Ember.Mixin.create(ParentMixin, {
     if (isHover && childWindow) {
       childWindow.activateWindow();
     }
-  }),
-
-  childWindow: computed('childWindows.[]', function() {
-    const childWindows = this.get('childWindows');
-
-    if (childWindows.length > 1) {
-      throw new Error('Child window for cell should be one');
-    }
-
-    return childWindows[0];
   }),
 
 });

@@ -1,4 +1,7 @@
-{{#menu-list isHover=true}}
+{{#link-to 'without'}}
+  without
+{{/link-to}}
+{{#menu-list}}
   {{#menu-row name="lala"}}
     {{#menu-cell class="parentHoverCell"}}
       back
@@ -15,7 +18,7 @@
       {{/menu-list}}
     {{/menu-cell}}
     {{#menu-cell class="parentHoverCell"}}
-      {{#menu-list}}
+      {{#menu-list isHover=true}}
         {{#menu-row}}
           track 1
         {{/menu-row}}

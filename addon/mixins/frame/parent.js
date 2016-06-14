@@ -14,20 +14,6 @@ export default Ember.Mixin.create({
    */
   isRoot: Ember.computed.not('parentWindow'),
 
-  childWindows: computed(()=> A()),
-
-  childWindowsInit: on('didInsertElement', function() {
-    const childWindows = this.get('childViews').filter(function(childView) {
-      return childView.get('isWindowFrame');
-    });
-
-    this.get('childWindows').pushObjects(childWindows);
-  }),
-
-  hasChildWindows: Ember.computed('childWindows', function() {
-    return !!this.get('childWindows').length;
-  }),
-
   getParentWindow(view) {
     if (!view) {
       return null;
