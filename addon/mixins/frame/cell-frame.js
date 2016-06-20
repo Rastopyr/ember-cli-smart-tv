@@ -17,6 +17,8 @@ export default Ember.Mixin.create(ParentMixin, {
 
   classNames: ['frame-cell-frame'],
 
+  concatenatedProperties: ['bindKeys'],
+
   isHasChildWindow: computed.bool('childWindow'),
 
   /**
@@ -85,5 +87,4 @@ export default Ember.Mixin.create(ParentMixin, {
       childWindow.activateWindow();
     }
   }),
-
 });

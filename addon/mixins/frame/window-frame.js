@@ -12,6 +12,8 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   classNames:['window-frame'],
 
+  concatenatedProperties: ['bindKeys'],
+
   actions: {
     registerRow(row) {
       this.registerRow(row);
@@ -173,7 +175,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @param { Ember.View }  row Row that should registered
    */
   registerRow(row) {
-    row.on('didDestroyElement', this, this.destroyRow);
+    row.on('didDestroyElement', this, () => this.destroyRow(row));
 
     this.get('rows').pushObject(row);
   },

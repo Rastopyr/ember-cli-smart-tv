@@ -10,6 +10,8 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   classNames: ['frame-row-frame'],
 
+  concatenatedProperties: ['bindKeys'],
+
   bindKeys: [
     {
       code: KeyCodes.KEY_RIGHT,
@@ -231,7 +233,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @param { Ember.View }  cell Cell that should registered
    */
   registerCell(cell) {
-    cell.on('didDestroyElement', this, this.destroyCell);
+    cell.on('didDestroyElement', this, () => this.destroyCell(cell));
 
     this.get('cells').pushObject(cell);
   },
