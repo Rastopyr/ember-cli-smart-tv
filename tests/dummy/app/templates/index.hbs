@@ -1,63 +1,19 @@
-{{#link-to 'without'}}
-  without
-{{/link-to}}
-{{#menu-list}}
-  {{#menu-row name="lala"}}
-    {{#menu-cell class="parentHoverCell"}}
-      back
-    {{/menu-cell}}
-    {{#menu-cell class="parentHoverCell"}}
-      {{#menu-list}}
-        {{#menu-row}}
-          play
-        {{/menu-row}}
-        {{#menu-row}}
-          add to collection
-        {{/menu-row}}
+<ul>
+  <li>
+    {{#link-to 'simple-grid'}}
+      Simple grid
+    {{/link-to}}
+  </li>
 
-      {{/menu-list}}
-    {{/menu-cell}}
-    {{#menu-cell class="parentHoverCell"}}
-      {{#menu-list isHover=true}}
-        {{#menu-row}}
-          track 1
-        {{/menu-row}}
-        {{#menu-row}}
-          track 2
-        {{/menu-row}}
-        {{#menu-row}}
-          track 2
-        {{/menu-row}}
-        {{#menu-row}}
-          track 2
-        {{/menu-row}}
-      {{/menu-list}}
-    {{/menu-cell}}
-  {{/menu-row}}
-  {{#menu-row}}
-    {{#menu-cell class="parentHoverCell"}}
-      back
-    {{/menu-cell}}
-    {{#menu-cell class="parentHoverCell"}}
-      {{#menu-list}}
-        {{#menu-row}}
-          play
-        {{/menu-row}}
-        {{#menu-row}}
-          add to collection
-        {{/menu-row}}
+  <li>
+    {{#link-to 'outlet-grid'}}
+      Outlet grid
+    {{/link-to}}
+  </li>
 
-      {{/menu-list}}
-    {{/menu-cell}}
-    {{#menu-cell class="parentHoverCell"}}
-      {{#menu-list}}
-        {{#menu-row}}
-          track 1
-        {{/menu-row}}
-        {{#menu-row}}
-          track 2
-        {{/menu-row}}
-      {{/menu-list}}
-    {{/menu-cell}}
-  {{/menu-row}}
-{{/menu-list}}
+  <li>
+    {{#link-to 'scroll-grid'}}
+      Scroll grid
+    {{/link-to}}
+  </li>
+</ul>

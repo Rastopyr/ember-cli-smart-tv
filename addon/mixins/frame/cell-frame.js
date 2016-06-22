@@ -5,13 +5,9 @@ import ParentMixin from '../../mixins/frame/parent';
 
 import layout from '../../templates/components/frame/cell-frame';
 
-const { computed, observer } = Ember;
+const { computed, observer, inject, on } = Ember;
 
 export default Ember.Mixin.create(ParentMixin, {
-
-  registerChildWindow(w) {
-    this.set('childWindow', w);
-  },
 
   tagName: 'span',
 
@@ -20,6 +16,8 @@ export default Ember.Mixin.create(ParentMixin, {
   concatenatedProperties: ['bindKeys'],
 
   isHasChildWindow: computed.bool('childWindow'),
+
+  frameService: inject.service('frame'),
 
   /**
    * Layout string of component
@@ -44,14 +42,14 @@ export default Ember.Mixin.create(ParentMixin, {
     * @public
     * @type  { Boolean }
     */
-   cellIndex: Ember.computed('parentRow.cells.[]', function() {
+   cellIndex: computed('parentRow.cells.[]', function() {
      return this.get('parentRow.cells').indexOf(this);
    }),
 
    /**
     * Register this cell in parent row
     */
-   registerCellInParent: Ember.on('didInsertElement', function() {
+   registerCellInParent: on('init', function() {
     const parentRow = this.get('parentRow');
 
     if (!parentRow) {
@@ -69,7 +67,7 @@ export default Ember.Mixin.create(ParentMixin, {
     * @public
     * @type  { Boolean }
     */
-   isHover: Ember.computed('cellIndex', 'parentRow.isHover', 'parentRow.hoverIndex', function() {
+   isHover: computed('cellIndex', 'parentRow.isHover', 'parentRow.hoverIndex', function() {
      const parentRow = this.get('parentRow');
 
      if (!parentRow || !parentRow.get('isHover')) {
@@ -84,7 +82,11 @@ export default Ember.Mixin.create(ParentMixin, {
     const childWindow = this.get('childWindow');
 
     if (isHover && childWindow) {
-      childWindow.activateWindow();
+      this.get('frameService').activateWindow(childWindow);
     }
   }),
+
+  registerChildWindow(w) {
+    this.set('childWindow', w);
+  },
 });

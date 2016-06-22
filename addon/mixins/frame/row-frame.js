@@ -35,6 +35,8 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     },
   },
 
+  isHover: false,
+
   /**
    * Layout string of component
    *
@@ -122,7 +124,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
   /**
    * Register row in parent window
    */
-  registerRowInParent: Ember.on('didInsertElement', function() {
+  registerRowInParent: Ember.on('init', function() {
     const parentWindow = this.get('parentWindow');
 
     if (!parentWindow) {
@@ -182,7 +184,10 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       }
 
       if (!noSwitch) {
-        this.get('frameService').trigger('rowFocusLeft', this);
+        this.get('frameService').trigger(
+          'rowFocusLeft',
+          this.get('parentWindow')
+        );
       }
 
       return;
@@ -214,7 +219,10 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       }
 
       if (!noSwitch) {
-        this.get('frameService').trigger('rowFocusRight', this);
+        this.get('frameService').trigger(
+          'rowFocusRight',
+          this.get('parentWindow')
+        );
       }
 
       return;

@@ -6,7 +6,7 @@ import RemoteKeydownMixin from 'ember-cli-smart-tv/mixins/remote/remote-keydown'
 import KeyCodes from 'ember-cli-smart-tv/services/env/keycodes';
 import layout from 'ember-cli-smart-tv/templates/components/frame/window-frame';
 
-const { computed, on } = Ember;
+const { computed, on, inject } = Ember;
 
 export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
@@ -37,7 +37,37 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     },
   ],
 
+  isHover: false,
+
   registerChildWindow: 'registerChildWindow',
+
+  /**
+   * Index of hovered row
+   *
+   * @property
+   * @public
+   * @type  { Number }
+   */
+  hoverIndex: 0,
+
+  /**
+   * Layout string of component
+   * @private
+   */
+  layout: layout,
+
+  /**
+   * Flag of view, for window frame
+   *
+   * @property
+   * @public
+   * @type  { Boolean }
+   */
+  isWindowFrame: true,
+
+  frameService: inject.service('frame'),
+
+  isHover: false,
 
   /**
    * Change row index to up
@@ -112,41 +142,13 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
   },
 
   /**
-   * Index of hovered row
-   *
-   * @property
-   * @public
-   * @type  { Number }
-   */
-  hoverIndex: 0,
-
-  /**
-   * Layout string of component
-   * @private
-   */
-  layout: layout,
-
-  /**
-   * Flag of view, for window frame
-   *
-   * @property
-   * @public
-   * @type  { Boolean }
-   */
-  isWindowFrame: true,
-
-  frameService: Ember.inject.service('frame'),
-
-  isHover: false,
-
-  /**
    * Reference to hover row
    *
    * @property
    * @public
    * @type  { Ember.View }
    */
-  activeRow: Ember.computed('hoverIndex', 'rows.[]', function() {
+  activeRow: computed('hoverIndex', 'rows.[]', function() {
     const rows = this.get('rows');
     const hoverIndex = this.get('hoverIndex');
 
@@ -190,13 +192,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     this.get('rows').removeObject(row);
   },
 
-  activateWindow() {
-    this.get('frameService.windows').forEach((wi)=> wi.set('isHover', false));
-
-    this.set('isHover', true);
-  },
-
-  registerWindow: Ember.on('init', function() {
+  registerWindow: on('init', function() {
     const service = this.get('frameService');
     const parentCell = this.get('parentCell');
 
@@ -204,6 +200,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       parentCell.registerChildWindow(this);
     }
 
-    service.trigger('registerWindow', this);
+    this.trigger('didRegisterWindow');
+    service.trigger('didRegisterWindow', this);
   })
 });

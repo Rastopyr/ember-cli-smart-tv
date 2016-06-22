@@ -19,18 +19,51 @@
   background: blue;
 }
 
-.hover-row-frame a {
-  /*color: white;*/
-}
+/*.hover-row-frame a {
+  color: white;
+}*/
 
 .frame-cell-frame {
   padding: 10px;
+  display: inline-block;
 }
 
 .hover-cell-frame {
   background: white;
 }
 
-.parentHoverCell {
-  display: inline-block;
+.outlet-window {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  /*
+  Nope =(
+  margin-left: -25%;
+  margin-top: -25%;
+  */
+
+  /*
+  Yep!
+  */
+  transform: translate(-50%, -50%);
+
+  /*
+  Not even necessary really.
+  e.g. Height could be left out!
+  */
+  width: 40%;
+  height: 100%;
+}
+
+.overlay {
+  background: black;
+  opacity: .5;
+
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
