@@ -67,3 +67,8 @@
   top: 0px;
   left: 0px;
 }
+
+.scroll-window {
+  height: 484px;
+  overflow-y: scroll;
+}
