@@ -12,6 +12,8 @@ export default WindowFrame.extend(ScrollMixin, {
 
   name: 'scroll-window',
 
+  isPaged: false,
+
   rowNames: computed(function() {
     const rows = [];
 

@@ -6,6 +6,8 @@ const { on, $ } = Ember;
 export default Ember.Mixin.create({
   classNames: ['scroll-window'],
 
+  isPaged: true,
+
   scrollListener: on('rowDidChange', function(options) {
     this[
       options.direction === 'up' ? 'triggerScrollUp' : 'triggerScrollDown'
@@ -13,6 +15,7 @@ export default Ember.Mixin.create({
   }),
 
   triggerScrollUp() {
+    const isPaged = this.get('isPaged');
     const activeElement = this.get('activeRow.element');
     const offsetTop = $(activeElement).offset().top - $(this.element).offset().top;
     const scrollHeight = $(activeElement)[0].scrollHeight ;
@@ -20,12 +23,19 @@ export default Ember.Mixin.create({
     const scrollTop = $(this.element).scrollTop();
     const windowHeight = $(this.element).height();
 
-    if (offsetTop <= 0) {
-      $(this.element).scrollTop(scrollTop - windowHeight);
+    if (isPaged) {
+      if (offsetTop <= 0) {
+        $(this.element).scrollTop(scrollTop - windowHeight);
+      }
+
+      return;
     }
+
+    $(this.element).scrollTop(scrollTop - scrollHeight);
   },
 
   triggerScrollDown() {
+    const isPaged = this.get('isPaged');
     const activeElement = this.get('activeRow.element');
     const offsetTop = $(activeElement).offset().top - $(this.element).offset().top;
     const scrollHeight = $(activeElement)[0].scrollHeight ;
@@ -33,8 +43,14 @@ export default Ember.Mixin.create({
     const scrollTop = $(this.element).scrollTop();
     const windowHeight = $(this.element).height();
 
-    if (offsetTop >= windowHeight) {
-      $(this.element).scrollTop(scrollTop + offsetTop);
+    if (isPaged) {
+      if (offsetTop >= windowHeight) {
+        $(this.element).scrollTop(scrollTop + offsetTop);
+      }
+
+      return;
     }
+
+    $(this.element).scrollTop(scrollTop + scrollHeight);
   },
 });
