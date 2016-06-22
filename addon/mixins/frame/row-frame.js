@@ -98,10 +98,11 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Boolean }
    */
-  isHover: Ember.computed('parentWindow.hoverIndex', 'parentWindow.isHover', 'rowIndex', function() {
+  isHover: Ember.computed('parentWindow.hoverIndex', 'parentWindow.isHover', 'rowIndex', 'frameService.activeWindow', function() {
     const parentView = this.get('parentWindow');
+    const activeWindow = this.get('frameService.activeWindow');
 
-    if (!parentView || !parentView.get('isHover')) {
+    if (!parentView || !parentView.get('isHover') || activeWindow !== parentView) {
       return false;
     }
 
