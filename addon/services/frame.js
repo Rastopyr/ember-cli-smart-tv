@@ -1,7 +1,7 @@
 
 import Ember from 'ember';
 
-const { computed, A, on, observer } = Ember;
+const { computed, A, on } = Ember;
 
 function verticalChangeWindow(w, direction) {
   const parentWindow = w.get('parentWindow');
@@ -60,11 +60,11 @@ export default Ember.Service.extend(Ember.Evented, {
   activeCell: computed.alias('activeRow.activeCell'),
 
   bindUpWindow: on('windowFocusUp', function(w) {
-    verticalChangeWindow.apply(this, [w, 'up'])
+    verticalChangeWindow.apply(this, [w, 'up']);
   }),
 
   bindDownWindow: on('windowFocusDown', function(w) {
-    verticalChangeWindow.apply(this, [w, 'down'])
+    verticalChangeWindow.apply(this, [w, 'down']);
   }),
 
   bindRightRow: on('rowFocusRight', function(r) {
@@ -96,7 +96,9 @@ export default Ember.Service.extend(Ember.Evented, {
 
     this.deactivateWindows();
 
-    const activatedWindow = windows.find((w)=> w.get('name') === name)
+    const activatedWindow = windows.find(
+      (w)=> w.get('name') === name
+    );
 
     if (activatedWindow) {
       activatedWindow.set('isHover', true);
@@ -104,6 +106,8 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   deactivateWindows() {
-    this.get('windows').forEach((wi)=> wi.set('isHover', false));
+    this.get('windows').forEach(
+      (wi)=> wi.set('isHover', false)
+    );
   }
 });

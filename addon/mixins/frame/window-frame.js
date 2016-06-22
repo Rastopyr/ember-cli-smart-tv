@@ -37,8 +37,6 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     },
   ],
 
-  isHover: false,
-
   registerChildWindow: 'registerChildWindow',
 
   /**

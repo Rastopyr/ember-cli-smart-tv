@@ -1,7 +1,7 @@
 
 import Ember from 'ember';
 
-const { observer, on, computed, A } = Ember;
+const { computed } = Ember;
 
 export default Ember.Mixin.create({
 
@@ -69,7 +69,7 @@ export default Ember.Mixin.create({
    * @public
    * @type  { Ember.View }
    */
-  parentWindow: Ember.computed(function() {
+  parentWindow: computed(function() {
     return this.getParentWindow(this.get('parentView'));
   }),
 
@@ -80,7 +80,7 @@ export default Ember.Mixin.create({
    * @public
    * @type  { Ember.View }
    */
-  parentRow: Ember.computed(function() {
+  parentRow: computed(function() {
     return this.getParentRow(this.get('parentView'));
   }),
 
@@ -91,7 +91,7 @@ export default Ember.Mixin.create({
    * @public
    * @type  { Ember.View }
    */
-  parentCell: Ember.computed(function() {
+  parentCell: computed(function() {
     return this.getParentCell(this.get('parentView'));
   }),
 
@@ -102,7 +102,7 @@ export default Ember.Mixin.create({
    * @public
    * @type  { Ember.View }
    */
-  anyParent: Ember.computed(function() {
+  anyParent: computed(function() {
     const parentCell = this.get('parentCell');
     const parentRow = this.get('parentRow');
     const parentWindow = this.get('parentWindow');
@@ -129,7 +129,7 @@ export default Ember.Mixin.create({
    * @public
    * @type  { Boolean }
    */
-  isActive: Ember.computed('isRoot', 'hasChildWindows', 'childWindows', function() {
+  isActive: computed('isRoot', 'hasChildWindows', 'childWindows', function() {
     const isRoot = this.get('isRoot');
     const childWindows = this.get('childWindows');
     const hasChildWindows = this.get('hasChildWindows');

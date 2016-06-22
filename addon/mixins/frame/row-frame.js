@@ -35,8 +35,6 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     },
   },
 
-  isHover: false,
-
   /**
    * Layout string of component
    *
