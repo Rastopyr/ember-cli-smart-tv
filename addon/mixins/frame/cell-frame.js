@@ -67,7 +67,7 @@ export default Ember.Mixin.create(ParentMixin, {
     * @public
     * @type  { Boolean }
     */
-   isHover: computed('cellIndex', 'parentRow.isHover', 'parentRow.hoverIndex', function() {
+   isHover: computed('cellIndex', 'parentRow.isHover', 'parentRow.hoverIndex', 'frameService.activeRow', function() {
      const parentRow = this.get('parentRow');
      const activeRow = this.get('frameService.activeRow');
 
