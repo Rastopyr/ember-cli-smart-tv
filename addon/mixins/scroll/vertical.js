@@ -41,7 +41,7 @@ export default Ember.Mixin.create({
     const scrollTop = $(this.element).scrollTop();
     const windowHeight = $(this.element).height();
 
-    if (offsetTop >= windowHeight) {
+    if (offsetTop + scrollHeight >= windowHeight) {
       if (isPaged) {
         $(this.element).scrollTop(scrollTop + offsetTop);
       } else {
