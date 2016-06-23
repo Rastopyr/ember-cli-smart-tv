@@ -5,7 +5,7 @@ import layout from '../../templates/components/scroll/vertical-scroll';
 import WindowFrame from 'ember-cli-smart-tv/components/frame/window-frame';
 import ScrollMixin from 'ember-cli-smart-tv/mixins/scroll/vertical';
 
-const { computed, on } = Ember;
+const { computed, on, inject } = Ember;
 
 export default WindowFrame.extend(ScrollMixin, {
   layout,

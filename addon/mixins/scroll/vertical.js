@@ -23,15 +23,13 @@ export default Ember.Mixin.create({
     const scrollTop = $(this.element).scrollTop();
     const windowHeight = $(this.element).height();
 
-    if (isPaged) {
-      if (offsetTop <= 0) {
+    if (offsetTop <= 0) {
+      if (isPaged) {
         $(this.element).scrollTop(scrollTop - windowHeight);
+      } else {
+        $(this.element).scrollTop(scrollTop - scrollHeight);
       }
-
-      return;
     }
-
-    $(this.element).scrollTop(scrollTop - scrollHeight);
   },
 
   triggerScrollDown() {
@@ -43,14 +41,12 @@ export default Ember.Mixin.create({
     const scrollTop = $(this.element).scrollTop();
     const windowHeight = $(this.element).height();
 
-    if (isPaged) {
-      if (offsetTop >= windowHeight) {
+    if (offsetTop >= windowHeight) {
+      if (isPaged) {
         $(this.element).scrollTop(scrollTop + offsetTop);
+      } else {
+        $(this.element).scrollTop(scrollTop + scrollHeight);
       }
-
-      return;
     }
-
-    $(this.element).scrollTop(scrollTop + scrollHeight);
   },
 });

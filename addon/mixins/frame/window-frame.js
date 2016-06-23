@@ -85,10 +85,12 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       if (isLoop) {
         this.set('hoverIndex', lastIndex);
         this.trigger('rowDidChange', { direction: 'up' });
-      }
+      } else {
+        this.trigger('focusOnFirstRow');
 
-      if (!noSwitch) {
-        this.get('frameService').trigger('windowFocusUp', this);
+        if (!noSwitch) {
+          this.get('frameService').trigger('windowFocusUp', this);
+        }
       }
 
       return;
@@ -116,10 +118,12 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       if (isLoop) {
         this.set('hoverIndex', 0);
         this.trigger('rowDidChange', { direction: 'down' });
-      }
+      } else {
+        this.trigger('focusOnLastRow');
 
-      if (!noSwitch) {
-        this.get('frameService').trigger('windowFocusDown', this);
+        if (!noSwitch) {
+          this.get('frameService').trigger('windowFocusDown', this);
+        }
       }
 
       return;
