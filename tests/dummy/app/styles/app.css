@@ -72,3 +72,22 @@
 .scroll-window .frame-row-frame {
   padding-bottom: 73px;
 }
+
+.horizontal-scroll {
+  width: auto;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.scroll-window-container {
+  width: 1024px;
+}
+
+.scroll-cell-container {
+  display: block;
+}
+
+.scroll-window-container, .scroll-row-container, .scroll-cell-container {
+  padding: 0px;
+}
