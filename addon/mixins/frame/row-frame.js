@@ -173,7 +173,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     const hoverIndex = this.get('hoverIndex');
     const lastIndex = cells.length > 0 ? cells.length - 1 : 0;
     const isLoop = this.get('isLoop');
-    const noSwitch = this.get('noSwitch');
+    const noSwitch = this.get('noSwitchLeft');
 
     if (hoverIndex === 0) {
 
@@ -211,7 +211,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     const hoverIndex = this.get('hoverIndex');
     const lastIndex = cells.length > 0 ? cells.length - 1 : 0;
     const isLoop = this.get('isLoop');
-    const noSwitch = this.get('noSwitch');
+    const noSwitch = this.get('noSwitchRight');
 
     if (hoverIndex === lastIndex) {
       if (isLoop) {
