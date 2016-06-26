@@ -180,13 +180,15 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       if (isLoop) {
         this.set('hoverIndex', lastIndex);
         this.trigger('cellDidChange', { direction: 'left' });
-      }
+      } else {
+        this.trigger('focusOnFirstCell');
 
-      if (!noSwitch) {
-        this.get('frameService').trigger(
-          'rowFocusLeft',
-          this.get('parentWindow')
-        );
+        if (!noSwitch) {
+          this.get('frameService').trigger(
+            'rowFocusLeft',
+            this.get('parentWindow')
+          );
+        }
       }
 
       return;
@@ -215,13 +217,15 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       if (isLoop) {
         this.set('hoverIndex', 0);
         this.trigger('cellDidChange', { direction: 'right' });
-      }
+      } else {
+        this.trigger('focusOnLastCell');
 
-      if (!noSwitch) {
-        this.get('frameService').trigger(
-          'rowFocusRight',
-          this.get('parentWindow')
-        );
+        if (!noSwitch) {
+          this.get('frameService').trigger(
+            'rowFocusRight',
+            this.get('parentWindow')
+          );
+        }
       }
 
       return;
