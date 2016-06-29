@@ -42,4 +42,11 @@ export default {
   '404': codes.KEY_GREEN,
   '405': codes.KEY_YELLOW,
   '406': codes.KEY_BLUE,
+
+  /*
+    Virtual Keyboard
+   */
+  '65376': codes.KEY_KEYBOARD_DONE,
+  '65385': codes.KEY_KEYBOARD_CANCEL,
+  '46': codes.KEY_KEYBOARD_CLEAR,
 };
