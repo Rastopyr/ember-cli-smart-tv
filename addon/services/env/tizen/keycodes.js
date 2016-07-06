@@ -1,6 +1,14 @@
 
 import * as codes from '../keycodes';
 
+export const keyNames = [
+  'MediaPause',
+  'MediaPlay',
+  'MediaRewind',
+  'MediaFastForward',
+  'MediaPlayPause',
+];
+
 export default {
   /*
     Navigation

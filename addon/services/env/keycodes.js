@@ -31,3 +31,10 @@ export const KEY_RED = 'KEY_RED';
 export const KEY_GREEN = 'KEY_GREEN';
 export const KEY_YELLOW = 'KEY_YELLOW';
 export const KEY_BLUE = 'KEY_BLUE';
+
+/**
+ * IME events
+ */
+export const KEY_KEYBOARD_DONE = 'KEY_KEYBOARD_DONE';
+export const KEY_KEYBOARD_CANCEL = 'KEY_KEYBOARD_CANCEL';
+export const KEY_KEYBOARD_CLEAR = 'KEY_KEYBOARD_CLEAR';
