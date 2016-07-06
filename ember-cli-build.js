@@ -1,10 +1,28 @@
 /*jshint node:true*/
 /* global require, module */
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+var Funnel = require('broccoli-funnel');
 
 module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
-    // Add options here
+    outputPaths: {
+      app: {
+        css: {
+          'app': 'dummy.css',
+        },
+        js: 'dummy.js',
+      },
+      vendor: {
+        css: 'vendor.css',
+        js: 'vendor.js',
+      },
+    },
+  });
+
+  var extraAssets = new Funnel('vendor', {
+    srcDir: '/',
+    include: ['**', '.tproject', '.project'],
+    destDir: '/'
   });
 
   /*
@@ -14,5 +32,5 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  return app.toTree();
+  return app.toTree(extraAssets);
 };
