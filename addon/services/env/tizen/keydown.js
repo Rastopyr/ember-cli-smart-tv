@@ -11,9 +11,6 @@ export default Ember.Service.extend(Ember.Evented, {
     }
 
     document.addEventListener('keydown', (e) => {
-      console.log({
-        code: e.keyCode
-      });
       if (!Codes[e.keyCode]) { return; }
 
       e.preventDefault();

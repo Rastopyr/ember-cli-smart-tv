@@ -20,6 +20,7 @@ export const KEY_MENU = 'KEY_MENU';
  */
 export const KEY_PLAY = 'KEY_PLAY';
 export const KEY_PAUSE = 'KEY_PAUSE';
+export const KEY_STOP = 'KEY_STOP';
 export const KEY_REWIND = 'KEY_REWIND';
 export const KEY_FORWARD = 'KEY_FORWARD';
 export const KEY_PLAYPAUSE = 'KEY_PLAYPAUSE';

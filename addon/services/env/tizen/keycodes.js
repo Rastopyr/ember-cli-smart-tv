@@ -7,6 +7,7 @@ export const keyNames = [
   'MediaRewind',
   'MediaFastForward',
   'MediaPlayPause',
+  'MediaStop'
 ];
 
 export default {
@@ -35,6 +36,7 @@ export default {
   '415': codes.KEY_PLAY,
   '19': codes.KEY_PAUSE,
   '412': codes.KEY_REWIND,
+  '413': codes.KEY_STOP,
   '417': codes.KEY_FORWARD,
   '10252': codes.KEY_PLAYPAUSE,
 
