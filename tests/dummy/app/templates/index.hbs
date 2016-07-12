@@ -1,19 +1,20 @@
-<ul>
-  <li>
-    {{#link-to 'simple-grid'}}
+
+{{#frame/window-frame isHover=true}}
+  {{#frame/row-frame}}
+    {{#link/cell-link 'simple-grid'}}
       Simple grid
-    {{/link-to}}
-  </li>
+    {{/link/cell-link}}
+  {{/frame/row-frame}}
 
-  <li>
-    {{#link-to 'outlet-grid'}}
+  {{#frame/row-frame}}
+    {{#link/cell-link 'outlet-grid'}}
       Outlet grid
-    {{/link-to}}
-  </li>
+    {{/link/cell-link}}
+  {{/frame/row-frame}}
 
-  <li>
-    {{#link-to 'scroll-grid'}}
+  {{#frame/row-frame}}
+    {{#link/cell-link 'scroll-grid'}}
       Scroll grid
-    {{/link-to}}
-  </li>
-</ul>
+    {{/link/cell-link}}
+  {{/frame/row-frame}}
+{{/frame/window-frame}}
