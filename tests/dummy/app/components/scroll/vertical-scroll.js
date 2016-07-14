@@ -26,5 +26,9 @@ export default WindowFrame.extend(ScrollMixin, {
 
   initWindow: on('didRegisterWindow', function() {
     this.get('frameService').activateWindow(this);
-  })
+  }),
+
+  logScrollEvents: on('scroll', function() {
+    console.log('scrollEvent', 'vertical', arguments);
+  }),
 });
