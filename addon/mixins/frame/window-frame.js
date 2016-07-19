@@ -6,23 +6,13 @@ import RemoteKeydownMixin from 'ember-cli-smart-tv/mixins/remote/remote-keydown'
 import KeyCodes from 'ember-cli-smart-tv/services/env/keycodes';
 import layout from 'ember-cli-smart-tv/templates/components/frame/window-frame';
 
-const { computed, on, inject } = Ember;
+const { computed, on, inject, A, observer } = Ember;
 
 export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   classNames:['window-frame'],
 
   concatenatedProperties: ['bindKeys'],
-
-  actions: {
-    registerRow(row) {
-      this.registerRow(row);
-    },
-
-    destroyRow(row) {
-      this.destroyRow(row);
-    },
-  },
 
   bindKeys: [
     {
@@ -63,9 +53,91 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    */
   isWindowFrame: true,
 
+  isHover: false,
+
+  autoActivate: false,
+
   frameService: inject.service('frame'),
 
-  isHover: false,
+  /**
+   * List of child rows
+   *
+   * @property
+   * @public
+   * @type  { Array }
+   */
+  rows: computed(() => A()),
+
+  actions: {
+    registerRow(row) {
+      this.registerRow(row);
+    },
+
+    destroyRow(row) {
+      this.destroyRow(row);
+    },
+  },
+
+  /**
+   * Reference to hover row
+   *
+   * @property
+   * @public
+   * @type  { Ember.View }
+   */
+  activeRow: computed('hoverIndex', 'rows.[]', function() {
+    const rows = this.get('rows');
+    const hoverIndex = this.get('hoverIndex');
+
+    if (!rows[hoverIndex]) {
+      Ember.Logger.warn('`Hover index of active window, out of sync with rows`');
+    }
+
+    return rows[hoverIndex];
+  }),
+
+  registerWindow: on('init', function() {
+    const service = this.get('frameService');
+    const parentCell = this.get('parentCell');
+
+    if (parentCell) {
+      parentCell.registerChildWindow(this);
+    }
+
+    this.trigger('didRegisterWindow');
+    service.trigger('didRegisterWindow', this);
+  }),
+
+  autoActivate: observer('isHover', 'autoActivate', function() {
+    const autoActivate = this.get('autoActivate');
+    const isHover = this.get('isHover');
+
+    if (isHover && autoActivate) {
+      this.get('frameService').activateWindow(this);
+    }
+  }),
+
+  /**
+   * Register new row
+   *
+   * @function
+   * @param { Ember.View }  row Row that should registered
+   */
+  registerRow(row) {
+    row.on('didDestroyElement', this, () => this.destroyRow(row));
+
+    this.get('rows').pushObject(row);
+  },
+
+  /**
+   * Remove row
+   *
+   * @function
+   * @param { Ember.View }  row Row that should removed
+   */
+  destroyRow(row) {
+    this.get('rows').removeObject(row);
+  },
 
   /**
    * Change row index to up
@@ -142,67 +214,4 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
   isHoverFrame() {
     return this.get('isHover');
   },
-
-  /**
-   * Reference to hover row
-   *
-   * @property
-   * @public
-   * @type  { Ember.View }
-   */
-  activeRow: computed('hoverIndex', 'rows.[]', function() {
-    const rows = this.get('rows');
-    const hoverIndex = this.get('hoverIndex');
-
-    if (!rows[hoverIndex]) {
-      Ember.Logger.warn('`Hover index of active window, out of sync with rows`');
-    }
-
-    return rows[hoverIndex];
-  }),
-
-  /**
-   * List of child rows
-   *
-   * @property
-   * @public
-   * @type  { Array }
-   */
-  rows: Ember.computed(function() {
-    return Ember.A();
-  }),
-
-  /**
-   * Register new row
-   *
-   * @function
-   * @param { Ember.View }  row Row that should registered
-   */
-  registerRow(row) {
-    row.on('didDestroyElement', this, () => this.destroyRow(row));
-
-    this.get('rows').pushObject(row);
-  },
-
-  /**
-   * Remove row
-   *
-   * @function
-   * @param { Ember.View }  row Row that should removed
-   */
-  destroyRow(row) {
-    this.get('rows').removeObject(row);
-  },
-
-  registerWindow: on('init', function() {
-    const service = this.get('frameService');
-    const parentCell = this.get('parentCell');
-
-    if (parentCell) {
-      parentCell.registerChildWindow(this);
-    }
-
-    this.trigger('didRegisterWindow');
-    service.trigger('didRegisterWindow', this);
-  })
 });
