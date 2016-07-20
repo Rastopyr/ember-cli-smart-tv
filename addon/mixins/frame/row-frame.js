@@ -98,7 +98,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Boolean }
    */
-  isHover: Ember.computed('parentWindow.hoverIndex', 'parentWindow.isHover', 'rowIndex', 'frameService.activeWindow', function() {
+  isHover: Ember.computed('parentWindow.hoverIndex', 'rowIndex', 'frameService.activeWindow', function() {
     const parentView = this.get('parentWindow');
     const activeWindow = this.get('frameService.activeWindow');
 
@@ -141,11 +141,13 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Ember.View }
    */
-  hoverCell: Ember.computed('hoverIndex', 'cells', function() {
+  hoverCell: Ember.computed('hoverIndex', 'parentWindow.isHover', 'isHover', 'cells.[]', function() {
     const cells = this.get('cells');
     const hoverIndex = this.get('hoverIndex');
 
-    if (!cells[hoverIndex]) {
+    console.log('re-compute', this.element);
+
+    if (!cells || !cells[hoverIndex]) {
       Ember.Logger.warn('`Hover index of active row, out of sync with cells`');
     }
 

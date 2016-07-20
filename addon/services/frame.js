@@ -55,9 +55,16 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.get('windows').find((w) => w.get('isHover'));
   }),
 
-  activeRow: computed.alias('activeWindow.activeRow'),
+  activeRow: computed('activeWindow', 'activeWindow.activeRow', function () {
+    return this.get('activeWindow.activeRow');
+  }),
 
-  activeCell: computed.alias('activeRow.activeCell'),
+  activeCell: computed('activeRow', 'activeRow.hoverCell', function () {
+    console.log(this.get('activeRow.hoverCell.element'));
+    return this.get('activeRow.hoverCell');
+  }),
+
+  // computed.alias('activeRow.hoverCell'),
 
   bindUpWindow: on('windowFocusUp', function(w) {
     verticalChangeWindow.apply(this, [w, 'up']);
@@ -85,29 +92,33 @@ export default Ember.Service.extend(Ember.Evented, {
     this.get('windows').removeObject(wind);
   },
 
-  activateWindow(wind) {
-    this.deactivateWindows();
-
-    wind.set('isHover', true);
-  },
-
   activateWindowByName(name) {
-    const windows = this.get('windows');
-
     this.deactivateWindows();
 
-    const activatedWindow = windows.find(
+    const activatedWindow = this.get('windows').find(
       (w)=> w.get('name') === name
     );
 
-    if (activatedWindow) {
+    if (activatedWindow && !activatedWindow.get('isHover')) {
       activatedWindow.set('isHover', true);
     }
   },
 
-  deactivateWindows() {
-    this.get('windows').forEach(
-      (wi)=> wi.set('isHover', false)
-    );
+  activateWindow(wind) {
+    this.deactivateWindows(wind);
+
+    if (!wind.get('isHover')) {
+      wind.set('isHover', true);
+    }
+  },
+
+  deactivateWindows(wind) {
+    this.get('windows').forEach((wi)=> {
+      wi.set('isHover', false);
+      //
+      // if (wind !== wi && wi.get('isHover') === true) {
+      //   wi.set('isHover', false);
+      // }
+    });
   }
 });

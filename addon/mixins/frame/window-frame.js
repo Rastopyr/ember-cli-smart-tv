@@ -6,7 +6,7 @@ import RemoteKeydownMixin from 'ember-cli-smart-tv/mixins/remote/remote-keydown'
 import KeyCodes from 'ember-cli-smart-tv/services/env/keycodes';
 import layout from 'ember-cli-smart-tv/templates/components/frame/window-frame';
 
-const { computed, on, inject, A, observer } = Ember;
+const { computed, on, inject, A, observer, defineProperty } = Ember;
 
 export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
@@ -57,6 +57,8 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   autoActivate: false,
 
+  activateBy: null,
+
   frameService: inject.service('frame'),
 
   /**
@@ -85,7 +87,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Ember.View }
    */
-  activeRow: computed('hoverIndex', 'rows.[]', function() {
+  activeRow: computed('hoverIndex', 'isHover', 'rows.[]', function() {
     const rows = this.get('rows');
     const hoverIndex = this.get('hoverIndex');
 
@@ -110,8 +112,9 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   autoActivateTrigger: observer('autoActivate', function() {
     const autoActivate = this.get('autoActivate');
+    const activateBy = this.get('activateBy');
 
-    if (autoActivate) {
+    if (autoActivate && !activateBy) {
       this.get('frameService').activateWindow(this);
     }
   }).on('init'),

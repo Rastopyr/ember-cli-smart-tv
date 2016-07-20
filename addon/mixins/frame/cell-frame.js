@@ -42,7 +42,7 @@ export default Ember.Mixin.create(ParentMixin, {
     * @public
     * @type  { Boolean }
     */
-   cellIndex: computed('parentRow.cells.[]', function() {
+   cellIndex: computed('parentRow.cells.[]', 'parentRow.hoverIndex', function() {
      return this.get('parentRow.cells').indexOf(this);
    }),
 
@@ -67,7 +67,7 @@ export default Ember.Mixin.create(ParentMixin, {
     * @public
     * @type  { Boolean }
     */
-   isHover: computed('cellIndex', 'parentRow.isHover', 'parentRow.hoverIndex', 'frameService.activeRow', function() {
+   isHover: computed('cellIndex', 'parentRow.isHover', 'frameService.activeRow', function() {
      const parentRow = this.get('parentRow');
      const activeRow = this.get('frameService.activeRow');
 
