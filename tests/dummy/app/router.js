@@ -12,6 +12,7 @@ Router.map(function() {
     this.route('outlet');
   });
   this.route('scroll-grid');
+  this.route('auto-activate');
 });
 
 export default Router;

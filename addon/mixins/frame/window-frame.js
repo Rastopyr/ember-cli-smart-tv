@@ -108,14 +108,13 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     service.trigger('didRegisterWindow', this);
   }),
 
-  autoActivateObserver: observer('isHover', 'autoActivate', function() {
+  autoActivateTrigger: observer('autoActivate', function() {
     const autoActivate = this.get('autoActivate');
-    const isHover = this.get('isHover');
 
-    if (isHover && autoActivate) {
+    if (autoActivate) {
       this.get('frameService').activateWindow(this);
     }
-  }),
+  }).on('init'),
 
   /**
    * Register new row
