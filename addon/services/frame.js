@@ -10,26 +10,37 @@ function verticalChangeWindow(w, direction) {
     return;
   }
 
+  const parentRow = w.get('parentRow');
+  const cellIndex = parentRow.get('cells').indexOf(w.get('parentCell'));
+
   this.deactivateWindows();
 
   parentWindow[direction === 'up' ? 'changeRowUp' : 'changeRowDown']();
+
+  parentWindow.set('activeRow.hoverIndex', cellIndex);
 
   const childWindow = parentWindow.get('activeRow.hoverCell.childWindow');
 
   if (!childWindow) {
     parentWindow.set('isHover', true);
+
     return;
   }
+
 
   childWindow.set('isHover', true);
 }
 
 function horizontalChangeWindow(r, direction) {
   const parentWindow = r.get('parentWindow');
+  const parentRow = r.get('parentRow');
 
   if (!parentWindow) {
     return;
   }
+
+  parentWindow.set('hoverIndex', parentWindow.get('rows').indexOf(parentRow));
+  parentRow.set('hoverIndex', parentRow.get('cells').indexOf(r.get('parentCell')));
 
   this.deactivateWindows();
 
@@ -63,8 +74,6 @@ export default Ember.Service.extend(Ember.Evented, {
     console.log(this.get('activeRow.hoverCell.element'));
     return this.get('activeRow.hoverCell');
   }),
-
-  // computed.alias('activeRow.hoverCell'),
 
   bindUpWindow: on('windowFocusUp', function(w) {
     verticalChangeWindow.apply(this, [w, 'up']);
@@ -113,12 +122,6 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   deactivateWindows(wind) {
-    this.get('windows').forEach((wi)=> {
-      wi.set('isHover', false);
-      //
-      // if (wind !== wi && wi.get('isHover') === true) {
-      //   wi.set('isHover', false);
-      // }
-    });
+    this.get('windows').forEach((wi) => wi.set('isHover', false));
   }
 });

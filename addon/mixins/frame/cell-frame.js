@@ -67,15 +67,15 @@ export default Ember.Mixin.create(ParentMixin, {
     * @public
     * @type  { Boolean }
     */
-   isHover: computed('cellIndex', 'parentRow.isHover', 'frameService.activeRow', function() {
-     const parentRow = this.get('parentRow');
-     const activeRow = this.get('frameService.activeRow');
+  isHover: computed('cellIndex', 'parentRow.isHover', 'frameService.activeRow', function() {
+    const parentRow = this.get('parentRow');
+    const activeRow = this.get('frameService.activeRow');
 
-     if (!parentRow || !parentRow.get('isHover')) {
-       return false;
-     }
+    if (!parentRow || !parentRow.get('isHover')) {
+      return false;
+    }
 
-     return parentRow.get('hoverIndex') === this.get('cellIndex');
+    return parentRow.get('hoverIndex') === this.get('cellIndex');
    }),
 
   activateChildWindow: observer('isHover', function() {

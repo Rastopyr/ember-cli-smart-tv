@@ -6,7 +6,11 @@ import KeyCodes from '../../services/env/keycodes';
 import RemoteKeydownMixin from '../../mixins/remote/remote-keydown';
 import layout from '../../templates/components/frame/row-frame';
 
-export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
+const {
+  Mixin, A, observer, computed, on
+} = Ember;
+
+export default Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   classNames: ['frame-row-frame'],
 
@@ -69,8 +73,6 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    */
   isRowFrame: true,
 
-  frameService: Ember.inject.service('frame'),
-
   /**
    * Index of hovered cell
    *
@@ -80,6 +82,8 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    */
   hoverIndex: 0,
 
+  frameService: Ember.inject.service('frame'),
+
   /**
    * Index of current row, by parentView
    *
@@ -87,7 +91,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Boolean }
    */
-  rowIndex: Ember.computed('parentWindow.rows.[]', function() {
+  rowIndex: computed('parentWindow.rows.[]', function() {
     return this.get('parentWindow.rows').indexOf(this);
   }),
 
@@ -98,7 +102,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Boolean }
    */
-  isHover: Ember.computed('parentWindow.hoverIndex', 'rowIndex', 'frameService.activeWindow', function() {
+  isHover: computed('parentWindow.hoverIndex', 'rowIndex', 'frameService.activeWindow', function() {
     const parentView = this.get('parentWindow');
     const activeWindow = this.get('frameService.activeWindow');
 
@@ -116,14 +120,14 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Array }
    */
-  cells: Ember.computed(function() {
-    return Ember.A();
+  cells: computed(function() {
+    return A();
   }),
 
   /**
    * Register row in parent window
    */
-  registerRowInParent: Ember.on('init', function() {
+  registerRowInParent: on('init', function() {
     const parentWindow = this.get('parentWindow');
 
     if (!parentWindow) {
@@ -141,7 +145,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @public
    * @type  { Ember.View }
    */
-  hoverCell: Ember.computed('hoverIndex', 'parentWindow.isHover', 'isHover', 'cells.[]', function() {
+  hoverCell: computed('hoverIndex', 'parentWindow.isHover', 'isHover', 'cells.[]', function() {
     const cells = this.get('cells');
     const hoverIndex = this.get('hoverIndex');
 
@@ -151,6 +155,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
     return cells[hoverIndex];
   }),
+
 
   /**
    * Predicate function, for key binings
@@ -212,6 +217,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     const lastIndex = cells.length > 0 ? cells.length - 1 : 0;
     const isLoop = this.get('isLoop');
     const noSwitch = this.get('noSwitchRight');
+    const inheritPosition = this.get('parentWindow.inheritPosition');
 
     if (hoverIndex === lastIndex) {
       if (isLoop) {
@@ -233,8 +239,6 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
     this.incrementProperty('hoverIndex');
     this.trigger('cellDidChange', { direction: 'right' });
-
-    return;
   },
 
   /**

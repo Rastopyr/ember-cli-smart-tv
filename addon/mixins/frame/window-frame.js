@@ -6,26 +6,16 @@ import RemoteKeydownMixin from 'ember-cli-smart-tv/mixins/remote/remote-keydown'
 import KeyCodes from 'ember-cli-smart-tv/services/env/keycodes';
 import layout from 'ember-cli-smart-tv/templates/components/frame/window-frame';
 
-const { computed, on, inject, A, observer, defineProperty } = Ember;
+const {
+  computed, on,
+  inject, A, observer, defineProperty
+} = Ember;
 
 export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   classNames:['window-frame'],
 
   concatenatedProperties: ['bindKeys'],
-
-  bindKeys: [
-    {
-      code: KeyCodes.KEY_UP,
-      predicates: ['isHoverFrame'],
-      handlers: ['changeRowUp'],
-    },
-    {
-      code: KeyCodes.KEY_DOWN,
-      predicates: ['isHoverFrame'],
-      handlers: ['changeRowDown'],
-    },
-  ],
 
   registerChildWindow: 'registerChildWindow',
 
@@ -57,18 +47,20 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   autoActivate: false,
 
-  activateBy: null,
-
   frameService: inject.service('frame'),
 
-  /**
-   * List of child rows
-   *
-   * @property
-   * @public
-   * @type  { Array }
-   */
-  rows: computed(() => A()),
+  bindKeys: [
+    {
+      code: KeyCodes.KEY_UP,
+      predicates: ['isHoverFrame'],
+      handlers: ['changeRowUp'],
+    },
+    {
+      code: KeyCodes.KEY_DOWN,
+      predicates: ['isHoverFrame'],
+      handlers: ['changeRowDown'],
+    },
+  ],
 
   actions: {
     registerRow(row) {
@@ -79,6 +71,35 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       this.destroyRow(row);
     },
   },
+
+  /**
+   * List of child rows
+   *
+   * @property
+   * @public
+   * @type  { Array }
+   */
+  rows: computed(() => A()),
+
+  registerWindow: on('init', function() {
+    const service = this.get('frameService');
+    const parentCell = this.get('parentCell');
+
+    if (parentCell) {
+      parentCell.registerChildWindow(this);
+    }
+
+    this.trigger('didRegisterWindow');
+    service.trigger('didRegisterWindow', this);
+  }),
+
+  autoActivateTrigger: observer('autoActivate', function() {
+    const autoActivate = this.get('autoActivate');
+
+    if (autoActivate) {
+      this.get('frameService').activateWindow(this);
+    }
+  }).on('didInsertElement'),
 
   /**
    * Reference to hover row
@@ -98,26 +119,15 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     return rows[hoverIndex];
   }),
 
-  registerWindow: on('init', function() {
-    const service = this.get('frameService');
-    const parentCell = this.get('parentCell');
+  inheritPosition: computed('parentWindow.inheritPosition', function() {
+    const parentWindow = this.get('parentWindow');
 
-    if (parentCell) {
-      parentCell.registerChildWindow(this);
+    if (parentWindow) {
+      return parentWindow.get('inheritPosition');
     }
 
-    this.trigger('didRegisterWindow');
-    service.trigger('didRegisterWindow', this);
+    return false;
   }),
-
-  autoActivateTrigger: observer('autoActivate', function() {
-    const autoActivate = this.get('autoActivate');
-    const activateBy = this.get('activateBy');
-
-    if (autoActivate && !activateBy) {
-      this.get('frameService').activateWindow(this);
-    }
-  }).on('init'),
 
   /**
    * Register new row
@@ -153,6 +163,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     const lastIndex = rows.length - 1;
     const isLoop = this.get('isLoop');
     const noSwitch = this.get('noSwitchUp');
+    const inheritPosition = this.get('inheritPosition');
 
     if (hoverIndex === 0) {
 
@@ -170,8 +181,9 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       return;
     }
 
-    this.decrementProperty('hoverIndex');
+    this.set('hoverIndex', this.get('rows').indexOf(this.get('activeRow')) - 1);
     this.trigger('rowDidChange', { direction: 'up' });
+
     return;
   },
 
@@ -187,6 +199,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     const lastIndex = rows.length - 1;
     const isLoop = this.get('isLoop');
     const noSwitch = this.get('noSwitchDown');
+    const inheritPosition = this.get('inheritPosition');
 
     if (hoverIndex === lastIndex) {
       if (isLoop) {
@@ -201,6 +214,11 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       }
 
       return;
+    }
+
+    if (inheritPosition) {
+      const activeRow = this.get('activeRow');
+      const hoverIndex = activeRow.get('hoverIndex');
     }
 
     this.incrementProperty('hoverIndex');
