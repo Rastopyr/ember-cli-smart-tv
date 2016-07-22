@@ -145,8 +145,6 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     const cells = this.get('cells');
     const hoverIndex = this.get('hoverIndex');
 
-    console.log('re-compute', this.element);
-
     if (!cells || !cells[hoverIndex]) {
       Ember.Logger.warn('`Hover index of active row, out of sync with cells`');
     }
