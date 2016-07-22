@@ -181,7 +181,15 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       return;
     }
 
-    this.set('hoverIndex', this.get('rows').indexOf(this.get('activeRow')) - 1);
+    const activeRow = this.get('activeRow');
+    const targetIndex = this.get('rows').indexOf(activeRow) - 1;
+    const targetRow = this.get(`rows.${targetIndex}`);
+
+    if (inheritPosition) {
+      targetRow.set('hoverIndex', activeRow.get('hoverIndex'));
+    }
+
+    this.set('hoverIndex', hoverIndex - 1);
     this.trigger('rowDidChange', { direction: 'up' });
 
     return;
@@ -216,9 +224,12 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
       return;
     }
 
+    const activeRow = this.get('activeRow');
+    const targetIndex = this.get('rows').indexOf(activeRow) + 1;
+    const targetRow = this.get(`rows.${targetIndex}`);
+
     if (inheritPosition) {
-      const activeRow = this.get('activeRow');
-      const hoverIndex = activeRow.get('hoverIndex');
+      targetRow.set('hoverIndex', activeRow.get('hoverIndex'));
     }
 
     this.incrementProperty('hoverIndex');
