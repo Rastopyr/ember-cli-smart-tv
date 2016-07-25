@@ -148,7 +148,13 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * @param { Ember.View }  row Row that should removed
    */
   destroyRow(row) {
-    this.get('rows').removeObject(row);
+    const rows = this.get('rows');
+    const hoverIndex = this.get('hoverIndex');
+    const indexOf = rows.indexOf(row);
+
+    if (indexOf >= hoverIndex) {
+      this.get('rows').removeObject(row);
+    }
   },
 
   /**
