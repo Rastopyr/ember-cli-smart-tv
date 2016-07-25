@@ -153,8 +153,10 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     const indexOf = rows.indexOf(row);
 
     if (indexOf >= hoverIndex) {
-      this.get('rows').removeObject(row);
+      this.set('hoverIndex', indexOf > 0 ? indexOf -1 : 0 );
     }
+
+    this.get('rows').removeObject(row);
   },
 
   /**

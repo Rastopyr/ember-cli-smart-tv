@@ -71,7 +71,6 @@ export default Ember.Service.extend(Ember.Evented, {
   }),
 
   activeCell: computed('activeRow', 'activeRow.hoverCell', function () {
-    console.log(this.get('activeRow.hoverCell.element'));
     return this.get('activeRow.hoverCell');
   }),
 
