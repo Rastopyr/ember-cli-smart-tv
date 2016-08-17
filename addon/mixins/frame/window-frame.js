@@ -47,6 +47,8 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   autoActivate: false,
 
+  registerParentCell: true,
+
   frameService: inject.service('frame'),
 
   bindKeys: [
@@ -84,8 +86,9 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
   registerWindow: on('init', function() {
     const service = this.get('frameService');
     const parentCell = this.get('parentCell');
+    const registerParentCell = this.get('registerParentCell');
 
-    if (parentCell) {
+    if (registerParentCell && parentCell) {
       parentCell.registerChildWindow(this);
     }
 
