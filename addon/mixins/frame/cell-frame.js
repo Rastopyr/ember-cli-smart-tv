@@ -88,7 +88,9 @@ export default Ember.Mixin.create(ParentMixin, {
   }),
 
   registerChildWindow(w) {
-    this.set('childWindow', w);
+    if (!this.get('childWindow')) {
+      this.set('childWindow', w);
+    }
   },
 
   isInHover() {
