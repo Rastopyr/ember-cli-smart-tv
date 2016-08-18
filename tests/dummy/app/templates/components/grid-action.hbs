@@ -1,0 +1,18 @@
+
+{{input value=name}}
+
+{{#frame/window-frame isHover=true}}
+  {{#frame/row-frame}}
+    {{#frame/cell-frame
+      enterAction=(action 'alertHello' name)
+    }}
+      Hello {{name}} from
+    {{/frame/cell-frame}}
+  {{/frame/row-frame}}
+
+  {{#frame/row-frame
+    enterAction=(action 'alertHello' name)
+  }}
+    Hello {{name}} from row
+  {{/frame/row-frame}}
+{{/frame/window-frame}}

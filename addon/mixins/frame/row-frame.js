@@ -23,6 +23,11 @@ export default Mixin.create(ParentMixin, RemoteKeydownMixin, {
       handlers: ['changeCellRight'],
     },
     {
+      code: KeyCodes.KEY_ENTER,
+      predicates: ['isInHover'],
+      handlers: ['enterAction'],
+    },
+    {
       code: KeyCodes.KEY_LEFT,
       predicates: ['isInHover'],
       handlers: ['changeCellLeft'],

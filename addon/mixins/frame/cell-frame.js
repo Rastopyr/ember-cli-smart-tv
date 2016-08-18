@@ -1,19 +1,29 @@
 
 import Ember from 'ember';
 
+import KeyCodes from '../../services/env/keycodes';
 import ParentMixin from '../../mixins/frame/parent';
+import RemoteKeydownMixin from '../../mixins/remote/remote-keydown';
 
 import layout from '../../templates/components/frame/cell-frame';
 
 const { computed, observer, inject, on } = Ember;
 
-export default Ember.Mixin.create(ParentMixin, {
+export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
   tagName: 'span',
 
   classNames: ['frame-cell-frame'],
 
   concatenatedProperties: ['bindKeys'],
+
+  bindKeys: [
+    {
+      code: KeyCodes.KEY_ENTER,
+      predicates: ['isInHover'],
+      handlers: ['enterAction'],
+    },
+  ],
 
   isHasChildWindow: computed.bool('childWindow'),
 

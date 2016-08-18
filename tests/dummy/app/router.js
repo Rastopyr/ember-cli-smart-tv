@@ -13,6 +13,7 @@ Router.map(function() {
   });
   this.route('scroll-grid');
   this.route('auto-activate');
+  this.route('grid-action');
 });
 
 export default Router;
