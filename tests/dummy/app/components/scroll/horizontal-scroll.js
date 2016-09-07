@@ -14,6 +14,7 @@ export default RowFrame.extend(ScrollMixin, {
   name: 'scroll-row',
 
   isPaged: false,
+  isAligned: true,
 
   cellNames: computed(function() {
     const rows = [];
@@ -25,7 +26,7 @@ export default RowFrame.extend(ScrollMixin, {
     return rows;
   }),
 
-  logScrollEvents: on('scroll', function() {
-    console.log('scrollEvent', 'horizontal', arguments);
-  }),
+  // logScrollEvents: on('scroll', function(options) {
+  //   console.log('scrollEvent', 'horizontal', options);
+  // }),
 });

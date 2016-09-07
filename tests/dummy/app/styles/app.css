@@ -80,6 +80,11 @@
   white-space: nowrap;
 }
 
+.horizontal-scroll .frame-cell-frame {
+  margin-right: 15px;
+  width: 53px;
+}
+
 .scroll-window-container {
   width: 1024px;
 }

@@ -7,6 +7,7 @@ export default Mixin.create(Evented, {
   classNames: ['scroll-row'],
 
   isPaged: true,
+  isAligned: true,
 
   scrollListener: on('cellDidChange', function(options) {
     this[
@@ -34,6 +35,7 @@ export default Mixin.create(Evented, {
   },
 
   triggerScrollRight() {
+    const isAligned = this.get('isAligned');
     const isPaged = this.get('isPaged');
     const activeElement = this.get('hoverCell.element');
 
@@ -44,7 +46,16 @@ export default Mixin.create(Evented, {
     const windowWidth = $(this.element).width();
 
     if (offsetLeft + scrollWidth > windowWidth) {
-      if (isPaged) {
+      if (isAligned) {
+        this.trigger('scroll', {
+          type: 'aligned',
+          direction: 'right',
+        });
+
+        $(this.element).scrollLeft(
+          scrollLeft + $(activeElement).outerWidth(true)
+        );
+      } else if (isPaged) {
         this.trigger('scroll', {
           type: 'paged',
           direction: 'right',
@@ -64,6 +75,7 @@ export default Mixin.create(Evented, {
 
   triggerScrollLeft() {
     const isPaged = this.get('isPaged');
+    const isAligned = this.get('isAligned');
     const activeElement = this.get('hoverCell.element');
 
     const offsetLeft = $(activeElement).offset().left - $(this.element).offset().left;
@@ -73,7 +85,16 @@ export default Mixin.create(Evented, {
     const windowWidth = $(this.element).width();
 
     if (offsetLeft <= 0) {
-      if (isPaged) {
+      if (isAligned) {
+        this.trigger('scroll', {
+          type: 'aligned',
+          direction: 'left',
+        });
+
+        $(this.element).scrollLeft(
+          scrollLeft - (scrollWidth - $(activeElement).offset().left)
+        );
+      } else if (isPaged) {
         this.trigger('scroll', {
           type: 'paged',
           direction: 'left',
