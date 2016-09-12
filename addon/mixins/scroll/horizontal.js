@@ -47,14 +47,23 @@ export default Mixin.create(Evented, {
 
     if (offsetLeft + scrollWidth > windowWidth) {
       if (isAligned) {
-        this.trigger('scroll', {
-          type: 'aligned',
-          direction: 'right',
-        });
+        if (isPaged) {
+          this.trigger('scroll', {
+            type: 'paged_aligned',
+            direction: 'right',
+          });
 
-        $(this.element).scrollLeft(
-          scrollLeft + $(activeElement).outerWidth(true)
-        );
+          $(this.element).scrollLeft(scrollLeft + offsetLeft);
+        } else {
+          this.trigger('scroll', {
+            type: 'aligned',
+            direction: 'right',
+          });
+
+          $(this.element).scrollLeft(
+            scrollLeft + $(activeElement).outerWidth(true)
+          );
+        }
       } else if (isPaged) {
         this.trigger('scroll', {
           type: 'paged',
@@ -86,14 +95,25 @@ export default Mixin.create(Evented, {
 
     if (offsetLeft <= 0) {
       if (isAligned) {
-        this.trigger('scroll', {
-          type: 'aligned',
-          direction: 'left',
-        });
+        if (isPaged) {
+          this.trigger('scroll', {
+            type: 'paged_aligned',
+            direction: 'left',
+          });
+          
+          $(this.element).scrollLeft(
+            scrollLeft - windowWidth + $(activeElement).outerWidth(true)
+          );
+        } else {
+          this.trigger('scroll', {
+            type: 'aligned',
+            direction: 'left',
+          });
 
-        $(this.element).scrollLeft(
-          scrollLeft - (scrollWidth - $(activeElement).offset().left)
-        );
+          $(this.element).scrollLeft(
+            scrollLeft - (scrollWidth - $(activeElement).offset().left)
+          );
+        }
       } else if (isPaged) {
         this.trigger('scroll', {
           type: 'paged',

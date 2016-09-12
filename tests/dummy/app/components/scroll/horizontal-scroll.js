@@ -13,7 +13,7 @@ export default RowFrame.extend(ScrollMixin, {
 
   name: 'scroll-row',
 
-  isPaged: false,
+  isPaged: true,
   isAligned: true,
 
   cellNames: computed(function() {
