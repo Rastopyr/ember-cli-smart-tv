@@ -8,6 +8,7 @@ export default Mixin.create(Evented, {
 
   isPaged: true,
   isAligned: true,
+  scrollCorrection: 0,
 
   scrollListener: on('cellDidChange', function(options) {
     this[
@@ -37,6 +38,7 @@ export default Mixin.create(Evented, {
   triggerScrollRight() {
     const isAligned = this.get('isAligned');
     const isPaged = this.get('isPaged');
+    const scrollCorrection = this.get('scrollCorrection');
     const activeElement = this.get('hoverCell.element');
 
     const offsetLeft = $(activeElement).offset().left - $(this.element).offset().left;
@@ -53,7 +55,7 @@ export default Mixin.create(Evented, {
             direction: 'right',
           });
 
-          $(this.element).scrollLeft(scrollLeft + offsetLeft);
+          $(this.element).scrollLeft(scrollLeft + offsetLeft + scrollCorrection);
         } else {
           this.trigger('scroll', {
             type: 'aligned',
@@ -61,7 +63,7 @@ export default Mixin.create(Evented, {
           });
 
           $(this.element).scrollLeft(
-            scrollLeft + $(activeElement).outerWidth(true)
+            scrollLeft + $(activeElement).outerWidth(true) + scrollCorrection
           );
         }
       } else if (isPaged) {
@@ -70,14 +72,14 @@ export default Mixin.create(Evented, {
           direction: 'right',
         });
 
-        $(this.element).scrollLeft(scrollLeft + offsetLeft);
+        $(this.element).scrollLeft(scrollLeft + offsetLeft + scrollCorrection);
       } else {
         this.trigger('scroll', {
           type: 'default',
           direction: 'right',
         });
 
-        $(this.element).scrollLeft(scrollLeft + scrollWidth);
+        $(this.element).scrollLeft(scrollLeft + scrollWidth + scrollCorrection);
       }
     }
   },
@@ -85,6 +87,7 @@ export default Mixin.create(Evented, {
   triggerScrollLeft() {
     const isPaged = this.get('isPaged');
     const isAligned = this.get('isAligned');
+    const scrollCorrection = this.get('scrollCorrection');
     const activeElement = this.get('hoverCell.element');
 
     const offsetLeft = $(activeElement).offset().left - $(this.element).offset().left;
@@ -100,9 +103,9 @@ export default Mixin.create(Evented, {
             type: 'paged_aligned',
             direction: 'left',
           });
-          
+
           $(this.element).scrollLeft(
-            scrollLeft - windowWidth + $(activeElement).outerWidth(true)
+            scrollLeft - windowWidth + $(activeElement).outerWidth(true) - scrollCorrection
           );
         } else {
           this.trigger('scroll', {
@@ -111,7 +114,7 @@ export default Mixin.create(Evented, {
           });
 
           $(this.element).scrollLeft(
-            scrollLeft - (scrollWidth - $(activeElement).offset().left)
+            scrollLeft - (scrollWidth - $(activeElement).offset().left) - scrollCorrection
           );
         }
       } else if (isPaged) {
@@ -120,14 +123,14 @@ export default Mixin.create(Evented, {
           direction: 'left',
         });
 
-        $(this.element).scrollLeft(scrollLeft - windowWidth);
+        $(this.element).scrollLeft(scrollLeft - windowWidth - scrollCorrection);
       } else {
         this.trigger('scroll', {
           type: 'default',
           direction: 'left',
         });
 
-        $(this.element).scrollLeft(scrollLeft - scrollWidth);
+        $(this.element).scrollLeft(scrollLeft - scrollWidth - scrollCorrection);
       }
     }
   },
