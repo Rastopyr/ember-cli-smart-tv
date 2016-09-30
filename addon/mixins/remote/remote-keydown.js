@@ -32,8 +32,11 @@ export default Ember.Mixin.create(ControlEvent, {
         }, Promise.resolve());
       };
 
-      const handlers = (key.handler ?
-        [key.handler] : key.handlers.filter((h) => h)) || [];
+      const handlers = (
+        (key.handler ? [key.handler] : key.handlers.filter((h) => h)) || []
+      ).filter((k) => {
+        return 'string' === typeof k ? this[k] : k
+      });
 
       const handler = () => {
         return Ember.A(
