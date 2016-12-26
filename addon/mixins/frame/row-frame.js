@@ -7,7 +7,7 @@ import RemoteKeydownMixin from '../../mixins/remote/remote-keydown';
 import layout from '../../templates/components/frame/row-frame';
 
 const {
-  Mixin, A, observer, computed, on
+  Mixin, A, observer, computed, on, run
 } = Ember;
 
 export default Mixin.create(ParentMixin, RemoteKeydownMixin, {
@@ -133,14 +133,16 @@ export default Mixin.create(ParentMixin, RemoteKeydownMixin, {
    * Register row in parent window
    */
   registerRowInParent: on('init', function() {
-    const parentWindow = this.get('parentWindow');
+   run.schedule('render', ()=> {
+     const parentWindow = this.get('parentWindow');
 
-    if (!parentWindow) {
-      Ember.Logger.warn('Parent window not detected');
-      return;
-    }
+     if (!parentWindow) {
+       Ember.Logger.warn('Parent window not detected');
+       return;
+     }
 
-    parentWindow.registerRow(this);
+     parentWindow.registerRow(this);
+   });
   }),
 
   /**

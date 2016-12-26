@@ -7,7 +7,7 @@ import KeyCodes from 'ember-cli-smart-tv/services/env/keycodes';
 import layout from 'ember-cli-smart-tv/templates/components/frame/window-frame';
 
 const {
-  computed, on,
+  computed, on, run,
   inject, A, observer, defineProperty
 } = Ember;
 
@@ -84,16 +84,18 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
   rows: computed(() => A()),
 
   registerWindow: on('init', function() {
-    const service = this.get('frameService');
-    const parentCell = this.get('parentCell');
-    const registerParentCell = this.get('registerParentCell');
+    run.schedule('render', ()=> {
+      const service = this.get('frameService');
+      const parentCell = this.get('parentCell');
+      const registerParentCell = this.get('registerParentCell');
 
-    if (registerParentCell && parentCell) {
-      parentCell.registerChildWindow(this);
-    }
+      if (registerParentCell && parentCell) {
+        parentCell.registerChildWindow(this);
+      }
 
-    this.trigger('didRegisterWindow');
-    service.trigger('didRegisterWindow', this);
+      this.trigger('didRegisterWindow');
+      service.trigger('didRegisterWindow', this);
+    });
   }),
 
   autoActivateTrigger: observer('autoActivate', function() {

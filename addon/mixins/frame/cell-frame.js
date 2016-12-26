@@ -7,7 +7,7 @@ import RemoteKeydownMixin from '../../mixins/remote/remote-keydown';
 
 import layout from '../../templates/components/frame/cell-frame';
 
-const { computed, observer, inject, on } = Ember;
+const { computed, observer, inject, on, run } = Ember;
 
 export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
@@ -59,16 +59,18 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    /**
     * Register this cell in parent row
     */
-   registerCellInParent: on('init', function() {
-    const parentRow = this.get('parentRow');
+  registerCellInParent: on('init', function() {
+    run.schedule('render', ()=> {
+      const parentRow = this.get('parentRow');
 
-    if (!parentRow) {
-      Ember.Logger.warn('Parent row not detected');
-      return;
-    }
+      if (!parentRow) {
+        Ember.Logger.warn('Parent row not detected');
+        return;
+      }
 
-    parentRow.registerCell(this);
-   }),
+      parentRow.registerCell(this);
+    });
+  }),
 
    /**
     * Is hovered this cell
