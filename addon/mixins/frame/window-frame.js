@@ -119,7 +119,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     const rows = this.get('rows');
     const hoverIndex = this.get('hoverIndex');
 
-    if (!rows[hoverIndex]) {
+    if (rows.length > 0 && !rows[hoverIndex]) {
       Ember.Logger.warn('`Hover index of active window, out of sync with rows`');
     }
 
