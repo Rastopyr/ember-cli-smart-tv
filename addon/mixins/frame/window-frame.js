@@ -197,11 +197,12 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     }
 
     const activeRow = this.get('activeRow');
+    const activeRowIndex = activeRow.get('hoverIndex');
     const targetIndex = this.get('rows').indexOf(activeRow) - 1;
     const targetRow = this.get(`rows.${targetIndex}`);
 
-    if (inheritPosition) {
-      targetRow.set('hoverIndex', activeRow.get('hoverIndex'));
+    if (inheritPosition && targetRow.get('cells.length') > activeRowIndex) {
+      targetRow.set('hoverIndex', activeRowIndex);
     }
 
     this.set('hoverIndex', hoverIndex - 1);
@@ -240,11 +241,12 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
     }
 
     const activeRow = this.get('activeRow');
+    const activeRowIndex = activeRow.get('hoverIndex');
     const targetIndex = this.get('rows').indexOf(activeRow) + 1;
     const targetRow = this.get(`rows.${targetIndex}`);
 
-    if (inheritPosition) {
-      targetRow.set('hoverIndex', activeRow.get('hoverIndex'));
+    if (inheritPosition && targetRow.get('cells.length') > activeRowIndex) {
+      targetRow.set('hoverIndex', activeRowIndex);
     }
 
     this.incrementProperty('hoverIndex');

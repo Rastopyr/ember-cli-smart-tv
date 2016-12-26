@@ -59,7 +59,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
    /**
     * Register this cell in parent row
     */
-  registerCellInParent: on('init', function() {
+   registerCellInParent: on('init', function() {
     run.schedule('render', ()=> {
       const parentRow = this.get('parentRow');
 
@@ -70,7 +70,7 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
 
       parentRow.registerCell(this);
     });
-  }),
+   }),
 
    /**
     * Is hovered this cell
