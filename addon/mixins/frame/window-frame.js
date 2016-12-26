@@ -99,12 +99,14 @@ export default Ember.Mixin.create(ParentMixin, RemoteKeydownMixin, {
   }),
 
   autoActivateTrigger: observer('autoActivate', function() {
-    const autoActivate = this.get('autoActivate');
+    run.schedule('render', ()=> {
+      const autoActivate = this.get('autoActivate');
 
-    if (autoActivate) {
-      this.get('frameService').activateWindow(this);
-    }
-  }).on('didInsertElement'),
+      if (autoActivate) {
+        this.get('frameService').activateWindow(this);
+      }
+    });
+  }).on('init'),
 
   /**
    * Reference to hover row
