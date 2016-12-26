@@ -39,10 +39,13 @@ export default Mixin.create(Evented, {
     const isAligned = this.get('isAligned');
     const isPaged = this.get('isPaged');
     const scrollCorrection = this.get('scrollCorrection');
-    const activeElement = this.get('hoverCell.element');
+    const $activeElement = $(this.get('hoverCell.element'));
 
-    const offsetLeft = $(activeElement).offset().left - $(this.element).offset().left;
-    const scrollWidth = $(activeElement)[0].scrollWidth;
+    const widthInHover = $activeElement.addClass('hover-cell-frame')[0].getBoundingClientRect().width;
+    const actualWidth = $activeElement.removeClass('hover-cell-frame')[0].getBoundingClientRect().width;
+
+    const offsetLeft = $activeElement.offset().left - $(this.element).offset().left;
+    const scrollWidth = $activeElement[0].scrollWidth;
 
     const scrollLeft = $(this.element).scrollLeft();
     const windowWidth = $(this.element).width();
@@ -55,7 +58,7 @@ export default Mixin.create(Evented, {
             direction: 'right',
           });
 
-          $(this.element).scrollLeft(scrollLeft + offsetLeft + scrollCorrection);
+          $(this.element).scrollLeft(scrollLeft + offsetLeft - (widthInHover - actualWidth) + scrollCorrection);
         } else {
           this.trigger('scroll', {
             type: 'aligned',
@@ -63,7 +66,7 @@ export default Mixin.create(Evented, {
           });
 
           $(this.element).scrollLeft(
-            scrollLeft + $(activeElement).outerWidth(true) + scrollCorrection
+            scrollLeft + $activeElement.outerWidth(true) + scrollCorrection
           );
         }
       } else if (isPaged) {
@@ -88,10 +91,14 @@ export default Mixin.create(Evented, {
     const isPaged = this.get('isPaged');
     const isAligned = this.get('isAligned');
     const scrollCorrection = this.get('scrollCorrection');
-    const activeElement = this.get('hoverCell.element');
+    const $activeElement = $(this.get('hoverCell.element'));
 
-    const offsetLeft = $(activeElement).offset().left - $(this.element).offset().left;
-    const scrollWidth = $(activeElement)[0].scrollWidth;
+    const widthInHover = $activeElement.addClass('hover-cell-frame')[0].getBoundingClientRect().width;
+    const actualWidth = $activeElement.removeClass('hover-cell-frame')[0].getBoundingClientRect().width;
+
+    const offsetLeft = $activeElement.offset().left - $(this.element).offset().left;
+
+    const scrollWidth = $activeElement[0].scrollWidth;
 
     const scrollLeft = $(this.element).scrollLeft();
     const windowWidth = $(this.element).width();
@@ -105,7 +112,7 @@ export default Mixin.create(Evented, {
           });
 
           $(this.element).scrollLeft(
-            scrollLeft - windowWidth + $(activeElement).outerWidth(true) - scrollCorrection
+            scrollLeft - windowWidth + $activeElement.offset().left + (widthInHover - actualWidth) + scrollCorrection
           );
         } else {
           this.trigger('scroll', {
@@ -114,7 +121,7 @@ export default Mixin.create(Evented, {
           });
 
           $(this.element).scrollLeft(
-            scrollLeft - (scrollWidth - $(activeElement).offset().left) - scrollCorrection
+            scrollLeft - (scrollWidth - $activeElement.offset().left) - scrollCorrection
           );
         }
       } else if (isPaged) {
