@@ -44,7 +44,9 @@ export default Ember.Mixin.create(ControlEvent, {
         ).reduce((seq, hName) => {
           const handler = this[hName];
 
-          return seq.then(() => handler.call(this));
+          if (handler.call) {
+            return seq.then(() => handler.call(this));
+          }
         }, Promise.resolve());
       };
 
