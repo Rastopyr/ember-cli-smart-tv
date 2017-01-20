@@ -25,8 +25,4 @@ export default RowFrame.extend(ScrollMixin, {
 
     return rows;
   }),
-
-  // logScrollEvents: on('scroll', function(options) {
-  //   console.log('scrollEvent', 'horizontal', options);
-  // }),
 });

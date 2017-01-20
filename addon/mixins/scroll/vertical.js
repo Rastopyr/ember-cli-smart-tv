@@ -8,6 +8,8 @@ export default Mixin.create(Evented, {
 
   isPaged: true,
 
+  scrollCorection: 5,
+
   scrollListener: on('rowDidChange', function(options) {
     this[
       options.direction === 'up' ? 'triggerScrollUp' : 'triggerScrollDown'
@@ -38,12 +40,13 @@ export default Mixin.create(Evented, {
     const isPaged = this.get('isPaged');
     const activeElement = this.get('activeRow.element');
     const offsetTop = $(activeElement).offset().top - $(this.element).offset().top;
-    const scrollHeight = $(activeElement)[0].scrollHeight ;
+    const scrollHeight = $(activeElement)[0].scrollHeight;
+    const scrollCorection = this.get('scrollCorection');
 
     const scrollTop = $(this.element).scrollTop();
     const windowHeight = $(this.element).height();
 
-    if (offsetTop <= 0) {
+    if (offsetTop <= 0 - scrollCorection) {
       if (isPaged) {
         this.trigger('scroll', {
           type: 'paged',
@@ -66,19 +69,20 @@ export default Mixin.create(Evented, {
     const isPaged = this.get('isPaged');
     const activeElement = this.get('activeRow.element');
     const offsetTop = $(activeElement).offset().top - $(this.element).offset().top;
-    const scrollHeight = $(activeElement)[0].scrollHeight ;
+    const scrollHeight = $(activeElement)[0].scrollHeight;
+    const scrollCorection = this.get('scrollCorection');
 
     const scrollTop = $(this.element).scrollTop();
     const windowHeight = $(this.element).height();
 
-    if (offsetTop + scrollHeight >= windowHeight) {
+    if (offsetTop + scrollHeight - scrollCorection >= windowHeight) {
       if (isPaged) {
         this.trigger('scroll', {
           type: 'paged',
           direction: 'down',
         });
 
-        $(this.element).scrollTop(scrollTop + offsetTop);
+        $(this.element).scrollTop(scrollTop + windowHeight);
       } else {
         this.trigger('scroll', {
           type: 'default',
